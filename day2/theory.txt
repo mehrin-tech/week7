@@ -1,0 +1,61 @@
+1)CRUD:-
+Create,Read,Update,Delete.these are the 4 basc oprtions on data
+i)Create:insertOne(),insertMany()->is used for each ones insert creates a documnt.
+eg:-db.students.inserOne({name:"asha",marks:50})
+ii)Read:find(),findOne()
+eg:-db.students.findOne({name:"asha"})
+iii)update:updateOne()-1st match cheyyunna update only,UpdateMany()-filter match  all docmnts updtes
+
+=====Update Operators=====
+a)$set- its only change one field ,to use one or new field add
+eg:-db.students.updateOne({name:"asha"},{$set:{marks:90}})  //updte asha 1st mark 
+b)$inc-its used to incremnt /decrmnt in Number field.
+eg:-db.students.updateOne({
+    name:"Riya"},
+    {$inc:{marks:5}}
+)//marks 5 point incrmnt cheyynnu.  
+c)$unset-remove a field
+eg:-db.students.updateMany(
+    {},
+    {$unset:{remarks:""}}
+)
+d)Upsert Option(bonus)-docmnt find is not ,inserted
+eg:-db.students.updateone(
+    {name:"neha"},
+    {$set:{marks:70,course:"physics"}},
+    {upsert:true}
+) // it means in studentslist neha student not found add that student ,or in she there  updated .
+
+$set → field set / add
+$inc → number increase / decrease
+$unset → field delete
+updateOne → first match
+updateMany → all matches
+upsert → insert if not found
+
+
+iv)delete:deleteOne(),deleteMany()
+eg:-db.students.deleteOne({name:"asha"})
+db.students.deleteMany({isPassed:false})
+
+======query Filters =============
+1)comparison operators:-
+>,<,=,!=   :-in mongo  ($gt,$lt,$eq,$ne)
+2)logical operators:AND,OR,NOT  in mongo($and,$or,$not)
+ eg:- mark>80 filter cheyyunna
+ db.students.find({marks:{$gt:80}})
+ eg:-marks >80 AND course="science"
+ db.students.find({marks:{$gt:80},course:"science"})
+
+eg:-marks>90 OR course="math"
+db.students.find({$or:[{marks:{$gt:90}},{course:"Maths"}]})
+
+
+=======Projection==========
+it is used for if the documnt can't disply all data,only some fileds only diplay  .
+in mongoDB find(filter,projection) use
+ eg:- db.collection.find(filter,{filed1:1,filed2:1,_id:0})
+ *1->include field ->disply taht field only
+ *0->exclude field -> hide that field
+ *_id:0-> id automatic aayi ellavarum verunna reslt aayirkkm
+  but we  0 when i id is explicitly removed in progress rprt

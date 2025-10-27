@@ -1,0 +1,132 @@
+1)Database- is a structured system that stores that large  amount of informations.so we can easily add ,find,update,delete.
+school db create:-
+Database=>school
+collections=>classes
+documents=>each student rcrds
+fields=>name,marks,course
+
+2)Database Managmnet Systm(DBMS):-
+is a software  its helps us to store  organize,manage,and acess data for easily.
+*its acts as a bridge btw user and Database.allowng usto create,read,update,and delete data efficiently
+
+DBMS -it acts like a librarian  of school library.
+3)SQL vs NoSQL
+i)SQL (relational Database):-
+   *it has fixed schema  means structre like table with rows and columns.
+   schema must be defined before inserting.
+   *use SQL to manage and query data
+   *best for structured and consistent data
+   *provide high data accuracy and follow strict rules
+   eg:-MySQL,PostgreSQL,oracle 
+   eg:- Table students
+   id | name | course | marks 
+  ==============================
+    0 | asha | BSc  |80
+
+
+ii)NoSQL(non-relational db):-
+   * store data flexible  format  such as a documents,key-value pair ,graphs
+   *its have no fixed schema -so we can change anytime  the data structure.
+   *use diffrnt query methds not only sql.
+   *its bst for unstructred,semi-structred or fast -charging data.
+   *desgned for high scalability & performance.
+   eg:-MongoDB,Cassendra,firebase
+
+4)functions of DBMS:-
+i)create 
+ii)read
+iii)update
+iv)delete
+v)secure
+
+
+5)======MongoDB=======
+*is a populr NoSQL db that stores data in a flexible,JSON-like format  called documents 
+instd of tables and rows likes SQL the traditional DB.
+*it organizes documents inside  collections,making it easy to store ,acess and manage large amount of structured ,semi-structured or unstructured data.
+* it is a documnt orientd highly scalable and works perfectly with js&nodejs,which makes its widely used for modern web apps such as social media,e-commerce & chatsapp.
+
+eg in data store like this in mongoDB:-
+{name:'asha',
+age:20,
+course:'scirnce'
+sub:['maths,phy],
+address:{city:'dubai",pin:12345}
+}
+
+======features and Advntges of MongoDB===========
+*docmnt orientd-it stores data as documnts like BSon/JSON
+*flexible schema
+*scalable-it can handle large data & grow easily across multipl servers.
+*high performance-so it fast reads and writes.
+*integrtn  with  js:-
+it uses JSOn like syntax,it works on perfectly with backed and frontend apps.
+*powerful querying and aggregtion(filter,sort,grp)
+
+
+structure :-
+School (db)
+|____Collectns  (std)
+|    |___Docmnt1:{name:'hanah',course:'BSC"}
+|     |___Docmnt2:{name:'asha",couse:'BCA}
+|
+|
+|_____collection (techr)     
+      |__doc1:
+      |___doc2
+
+====key commands====
+show dbs=>list all db first(admin,locl..)
+use  School=>create/switchd to school DB.  show Db=>db enter
+db.createCollections("students")=>create collections
+show colllections=>show all collections
+db.dropDatabase()=>delete DB
+
+I)each collctn is stord as multiple BSON files under MongoDB's data directry.
+
+
+====data types in mongo====
+string
+number
+boolean
+array-multiple values in one field
+object-nstd strctr
+Date-stored as ISO date in BSON
+objectId
+deciaml128-high precision decmal
+
+
+Q)BSON                VS                       JSON
+*Binry formt                               text-basd
+*supprts rich types(date,objId)             limitd data types
+*optimised for speed & efficncy             human readable
+*faster for Db engines                       slower to parse
+
+
+=====Insert operations===========
+
+1)insertOne()
+eg:-db.students.insertOne({name:'aisha',age:20})
+2)insertMany()
+eg:-
+db.students.insertMany([
+    {name:'aisha',age:20,address:{city:"thrisur"},sub:["maths"]},
+    {name:'rana',age:22,address:{city:"palakkd"},sub:["eng"]},
+    {name:'hana',age:23,address:{city:"malappram"},sub:["phy"]}
+])
+
+======retrieve data===========
+
+1)find()
+
+2)findOne()
+db.students.findOne()->res={name:'asha',age:20,address:{city:"thrisur"},sub:["maths"]}
+3)find().pretty()
+db.students.find().pretty()=>
+{name:'asha',
+age:20,
+address:{city:"thrisur"},
+sub:["maths"]}
+4)find({find:value})
+db.students.find({name:'rana'}) res=
+ {name:'rana',age:22,address:{city:"palakkd"},sub:["eng"]},

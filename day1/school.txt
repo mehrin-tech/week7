@@ -1,0 +1,102 @@
+test> show dbs
+School   8.00 KiB
+admin   40.00 KiB
+config  36.00 KiB
+local   72.00 KiB
+test> use School =====switched to School
+switched to db School
+School> db
+School
+School> show collections
+School> db.Students.insertOne({ name:"Aisha",course:"Science",marks:80,dob:new Date("2004-06-10"),isPassed:true,joiningDate:new Date("2025-06-10"),subjects:["Physics","Chemistry","Computer Science","Maths"],address:{city:"Palakkad",pin:679305,country:"India"},remarks:"Excellent Student"})
+{
+  acknowledged: true,
+  insertedId: ObjectId('68fb05dda685db7566cebea4')
+}
+===========insertMany()===========
+([{name:"Amna",course:"Science",marks:85,dob:new Date("2003-08-23"),isPassed:true,joiningdate:new Date("2025-07-10"),subjects:["Maths","Physics","Chemistry","Biology"],address:{city:"Thrissur",pin:670890,country:"India"},remarks:"Excellent Student"},
+{name:"Bincy",course:"Humanities",marks:50,dob:new Date("2002-09-21"),isPassed:true,joiningDate:new Date("2025-06-11"),subjects:["Economics","Sociology","Political Science"],address:{city:"Malappuram",pin:673098,country:"India"},remarks:"Good Student"},
+{name:"Mia",course:"Commerce",marks:70,dob:new Date("2002-06-24"),isPassed:true,joiningDate:new Date("2025-06-23"),subjects:["Economics","Computer Application","Business"],address:{city:"Thrissur",pin:670890,country:"India"},remarks:"Very Good Student"}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('68fb1feaa685db7566cebea5'),
+    '1': ObjectId('68fb1feaa685db7566cebea6'),
+    '2': ObjectId('68fb1feaa685db7566cebea7')
+  }
+}
+======insertOne()=======
+School> db.Students.insertOne({name:"Zeba",course:"Science",marks:90,dob:new Date("2005-09-04"),isPassed:true,joiningDate:new Date("2025-07-10"),subjects:["Maths","Physics","Chemistry"],address:{city:"Palakkad",pin:679305,country:"India"},remarks:"Excellent Student"})
+{
+  acknowledged: true,
+  insertedId: ObjectId('68fb217ba685db7566cebea8')
+}
+
+==========find()============
+School> db.Students.find()
+[
+  {
+    _id: ObjectId('68fb05dda685db7566cebea4'),
+    name: 'Aisha',
+    course: 'Science',
+    marks: 80,
+    dob: ISODate('2004-06-10T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),
+    subjects: [ 'Physics', 'Chemistry', 'Computer Science', 'Maths' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    remarks: 'Excellent Student'
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea5'),
+    name: 'Amna',
+    course: 'Science',
+    marks: 85,
+    dob: ISODate('2003-08-23T00:00:00.000Z'),
+    isPassed: true,
+    joiningdate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry', 'Biology' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    remarks: 'Excellent Student'
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea6'),
+    name: 'Bincy',
+    course: 'Humanities',
+    marks: 50,
+    dob: ISODate('2002-09-21T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-11T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Sociology', 'Political Science' ],
+    address: { city: 'Malappuram', pin: 673098, country: 'India' },
+    remarks: 'Good Student'
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea7'),
+    name: 'Mia',
+    course: 'Commerce',
+    marks: 70,
+    dob: ISODate('2002-06-24T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-23T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-23T00:00:00.000Z'),
+    joiningDate: ISODate('2025-06-23T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Computer Application', 'Business' ],
+    subjects: [ 'Economics', 'Computer Application', 'Business' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    remarks: 'Very Good Student'
+  },
+  {
+    _id: ObjectId('68fb217ba685db7566cebea8'),
+    name: 'Zeba',
+    course: 'Science',
+    marks: 90,
+    dob: ISODate('2005-09-04T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    remarks: 'Excellent Student'
+  }
+]
