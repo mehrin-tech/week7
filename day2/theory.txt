@@ -39,8 +39,42 @@ eg:-db.students.deleteOne({name:"asha"})
 db.students.deleteMany({isPassed:false})
 
 ======query Filters =============
+find() query cheyyumbol nammak yenthellam documnts venamennu filter cheyyananu queryfilters use cheyyunnathu
+
+syntx :
+db.collction.find({field:{opertor:value}})
+eg:-
+db.students.find({marks:{${gt:80}}})
+[
+  { name: "Aisha", marks: 85 },
+  { name: "Riya", marks: 92 },
+  { name: "Mehfil", marks: 70 },
+  { name: "Neha", marks: 95 }
+]
+otpu:-
+aisha,riya,neha
+
+
 1)comparison operators:-
->,<,=,!=   :-in mongo  ($gt,$lt,$eq,$ne)
+>,<,=,!=   :-in mongo  ($gt,$lt,$gte,$lte,$eq,$ne,$in,$nin)
+
+$ne-not eqaul to
+%in-matches any in a list
+$nin-not in a list
+[
+  { name: "Aisha", marks: 85, course: "Science" },
+  { name: "Riya", marks: 60, course: "Math" },
+  { name: "Neha", marks: 92, course: "History" },
+  { name: "Mehfil", marks: 45, course: "Science" }
+]
+db.student.find({marks:{$lt:50}}) =>mehfil:45
+db.student.find({course:{$eq:"Science}})=>aisha,mehfil
+db.student.find({course:{$ne:"Maths}})=>aisha,neha,mehfil
+db.students.find({course:{$in:["science","history"]}})=>neha
+db.students.find({course:{$nin:["Meths"]}})=>aisha,neha,mehfil
+
+
+
 2)logical operators:AND,OR,NOT  in mongo($and,$or,$not)
  eg:- mark>80 filter cheyyunna
  db.students.find({marks:{$gt:80}})
@@ -49,13 +83,199 @@ db.students.deleteMany({isPassed:false})
 
 eg:-marks>90 OR course="math"
 db.students.find({$or:[{marks:{$gt:90}},{course:"Maths"}]})
+eg:-
+$and-all cndtns true
+$or-atleast one cndtn true
+$not-negate condtn
+$and:-
+db.student.find({
+    $and:[
+        {marks:{$gt:70}},
+        {course:"science"}
+    ]
+})//above 70 marks in science students only
+
+$or:-
+
+db.student.find({
+    $or:[
+        {marks:{$lt:50}},
+        {course:"math"}
+    ]
+})//below 50 marks students or maths student only
 
 
+$not:-
+db.student.find({marks:{$not:{$gte:60}}})
+//disply only below 60 marks students only
 =======Projection==========
 it is used for if the documnt can't disply all data,only some fileds only diplay  .
 in mongoDB find(filter,projection) use
  eg:- db.collection.find(filter,{filed1:1,filed2:1,_id:0})
  *1->include field ->disply taht field only
  *0->exclude field -> hide that field
- *_id:0-> id automatic aayi ellavarum verunna reslt aayirkkm
-  but we  0 when i id is explicitly removed in progress rprt
+ *_id:0-> id automatic aayi varum
+  but we add the value is 0 id is explicitly removed in progress rprt
+
+  eg:-if the teachers can only see students name and marks,we use projection show field1,and field2.
+  projection use cheythaal fields maathram return cheyyum,extra data illathe
+
+structre:-
+db.collection.find(filter,projection)
+2 params 1)filter ({})=>yeeth docmnts aanu thirayendethennu  parayunnathu->display all students
+2)projection({})=>yeeth fields kaanikkanam yennu parayunnathu
+  db.students.find({},{name:1,marks:1,_id:0})
+  eg:- school database
+  teachr said :
+  1) diplay all students ({})
+  2)but display only their names and marks({name:1,marks:1,_id:0})id-hide cheyyuka
+
+  eg2:-use filter
+  db.students.find({course:"Science},{name:1,marks;1})
+
+*display only science course students using filter.
+*show only their name and marks({name:1,marks;1})-use projection
+
+
+
+==============Sorting and Limiting results: sort(), limit()==========
+1)sort()-ascemdng /descndng
+2)limit()=yethre docmnts kaanikkanam yennu .
+theses twoes are use for a find()query mehtd lastil like a chain
+eg:-
+db.students.find().sort({marks:-1}).limit(3)
+sort -docmnt ascnding or descndng set cheyyunna
+{marks:1}->ascnding
+{marks:-1}->descndg
+
+[
+  { name: "Aisha", marks: 85 },
+  { name: "Riya", marks: 92 },
+  { name: "Mehfil", marks: 70 },
+  { name: "Neha", marks: 95 }
+]
+//ascnding 
+db.students.find().sort({marks:1})
+out:-
+mehfil-70
+aisha-85
+riya-92
+neha-95
+//descndg
+db.students.find().sort({marks:-1})
+neha-95,riya-92,aisha-85,mehfil-70
+
+2)limit->thirike kaanikunna documnts limit control cheyyunna
+db.students.find().limit(number)
+db.students.find().limit(2)->only shows 1st 2 students
+if combined with sort()-:
+db.students.find().sort({marks:-1}).limit(3)
+//it means marks ooduthal ulla top 3 students shown
+
+
+eg:P-
+db.students.find(
+    {isPassed:true},//it means  only disply passd stdnts
+    {name:1,marks:1,_id:0},//it means show only their name and marks without id
+
+).sort({marks:-1}).limit(3)//it means first 3top highst marks students show olny
+
+
+[
+  { name: "Aisha", marks: 85 },
+  { name: "Riya", marks: 92 },
+  { name: "Mehfil", marks: 70 },
+  { name: "Neha", marks: 95 }
+]
+
+
+outpt:-
+{ name: "Neha", marks: 95 }
+{ name: "Riya", marks: 92 }
+{ name: "Aisha", marks: 85 }
+
+
+
+===========Cursors: using forEach() to loop through query results.===============
+
+cursor:-
+ cursor is an iterator object that allows you to gothrough the documnts returned by a query,one by one
+ eg:-
+ let cursor=db.students.find()/cursor holds a reference to all student documnts in the collctn.it can loop through or convert to an arry.
+
+ real world analogy:-
+ school database:
+  me ask:show me all students
+  mnbgoDb dosn;t dump all 10000 studnets at once,instd it hands you a studntlisy cursor ,sayig:
+
+  here the list -so you can read 1 stdnt at a time.call one name aftr anothr.
+
+
+  ====why mongoDb use a cursor====
+
+  mongoDB deals with large datasets.lodaing thousands of docs all at onec waste memory an dslow things down.so it can use cursor
+  at a time cursor fetched a documnts like streams 
+ ===advantages=====
+  memory effient,speed:- data is straemed for improving the performance.
+  flexibility:-it can sort ,limit,project resls bfore reading.
+  scalability:-it can handles milions of rcords without crashng system.
+
+===common methods in cursor===
+1) forEach-loop thrgh docs->cursor.forEach(d=>print(d.name))
+2).toArray()- converts reslts to js array=>cursor.toArray()
+
+let allstdnts=db.students.find().toArray()
+only for small datasts,bcoz its loads all data into memory at once.
+3)hasNext()=check if more docs exist=>cursor .hasnext()
+4).next()- get next docmnt=> cursor.next()
+5).sort()=sort reslts=>sort({marks:-1})
+6)limit()-limit number of docs=>limit(5)
+7)skip()=skp certain docs=>skip(10)
+
+=====cursor basic actions-operations====
+a)get a cursor
+let cursor=db.students.find()
+b)check cursor
+cursor;//MongoCursor@1234567890 it means a pointer to the reslt set ,not the data itself
+
+c)loop through cursor using forEach
+db.students.find().foreach(doc=>{
+    print("name :"+student.name)
+})// it prints each docmnts name one by one
+
+d) convert to array
+let arr=db.students.find().toArray()//use this for small datasets,since it loads all data into memory
+
+e)manual itertion
+
+let cursor=db.stdunts.find()
+while(cursor.hasNext()){//.hasNext()->check if anothr docmnt exists
+    printjson(cursor.next())// retrieves next docmnt
+}
+
+
+=========chaining methds=======
+find() → filter students who passed
+Projection → show only name and marks
+sort() → order by marks descending
+limit(3) → top 3 students
+forEach() → print each result
+
+db.students.find(
+    {isPassed:true},
+    {name:1,marks:1,_id:0}
+).sort({marks:-1})
+.limit(3)
+.foreach(s=>print(s.name+"-"+s.marks))
+
+===how cursor work internally====
+mengoDb server  actually returns the reslts in batches
+default batch size ->101 docmnts or 1mb,whichnever comens first
+as a client reads docmnts ,mongoDb sends next batch automatically
+
+
+
+
+
+
+

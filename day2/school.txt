@@ -1,0 +1,273 @@
+====tasks====
+1) update a students' marks or couse using $set
+School> db.Students.updateOne({name:"Aisha"},{$set:{marks:100}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+2)increase marks of all passed students by 5 using 5 $inc
+
+School> db.Students.updateMany({isPassed:true},{$inc:{marks:5}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 5,
+  modifiedCount: 5,
+  upsertedCount: 0
+}
+3) remove  the remarks  field from all docmnts using $unset
+School> db.Students.updateMany({},{$unset:{remarks:""}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 5,
+  modifiedCount: 5,
+  upsertedCount: 0
+}
+School> db.Students.find().pretty()
+[
+  {
+    _id: ObjectId('68fb05dda685db7566cebea4'),
+    name: 'Aisha',
+    course: 'Science',
+    marks: 105,
+    dob: ISODate('2004-06-10T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),
+    subjects: [ 'Physics', 'Chemistry', 'Computer Science', 'Maths' ],      
+    address: { city: 'Palakkad', pin: 679305, country: 'India' }
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea5'),
+    name: 'Amna',
+    course: 'Science',
+    marks: 90,
+    dob: ISODate('2003-08-23T00:00:00.000Z'),
+    isPassed: true,
+    joiningdate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry', 'Biology' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' }
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea6'),
+    name: 'Bincy',
+    course: 'Humanities',
+    marks: 55,
+    dob: ISODate('2002-09-21T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-11T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Sociology', 'Political Science' ],
+    address: { city: 'Malappuram', pin: 673098, country: 'India' }
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea7'),
+    name: 'Mia',
+    course: 'Commerce',
+    marks: 75,
+    dob: ISODate('2002-06-24T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-23T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Computer Application', 'Business' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' }
+  },
+  {
+    _id: ObjectId('68fb217ba685db7566cebea8'),
+    name: 'Zeba',
+    course: 'Science',
+    marks: 95,
+    dob: ISODate('2005-09-04T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' }
+  }
+]
+4)Delete one student whose course is "Math";.
+School> db.Students.deleteOne({course:"Maths"})
+{ acknowledged: true, deletedCount: 1 }
+
+School> db.Students.find().pretty()
+[
+  {
+    _id: ObjectId('68fb05dda685db7566cebea4'),
+    name: 'Aisha',
+    course: 'Science',
+    marks: 105,
+    dob: ISODate('2004-06-10T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),
+    subjects: [ 'Physics', 'Chemistry', 'Computer Science', 'Maths' ],      
+    address: { city: 'Palakkad', pin: 679305, country: 'India' }
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea5'),
+    name: 'Amna',
+    course: 'Science',
+    marks: 90,
+    dob: ISODate('2003-08-23T00:00:00.000Z'),
+    isPassed: true,
+    joiningdate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry', 'Biology' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' }
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea6'),
+    name: 'Bincy',
+    course: 'Humanities',
+    marks: 55,
+    dob: ISODate('2002-09-21T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-11T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Sociology', 'Political Science' ],
+    address: { city: 'Malappuram', pin: 673098, country: 'India' }
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea7'),
+    name: 'Mia',
+    course: 'Commerce',
+    marks: 75,
+    dob: ISODate('2002-06-24T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-23T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Computer Application', 'Business' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' }
+  },
+  {
+    _id: ObjectId('68fb217ba685db7566cebea8'),
+    name: 'Zeba',
+    course: 'Science',
+    marks: 95,
+    dob: ISODate('2005-09-04T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' }
+  }
+]
+5)Show only name, course, and marks for all students.
+School> db.Students.find({},{name:1,course:1,marks:1,_id:0})
+[
+  { name: 'Aisha', course: 'Science', marks: 105 },
+  { name: 'Amna', course: 'Science', marks: 90 },
+  { name: 'Bincy', course: 'Humanities', marks: 55 },
+  { name: 'Mia', course: 'Commerce', marks: 75 },
+  { name: 'Zeba', course: 'Science', marks: 95 }
+]
+
+6)Find students with marks &gt; 80 and course = &quot;Science&quot;.
+School> db.Students.find({marks:{$gt:80},course:"Science"}).pretty()
+[
+  {
+    _id: ObjectId('68fb05dda685db7566cebea4'),
+    name: 'Aisha',
+    course: 'Science',
+    marks: 105,
+    dob: ISODate('2004-06-10T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),
+    subjects: [ 'Physics', 'Chemistry', 'Computer Science', 'Maths' ],      
+    address: { city: 'Palakkad', pin: 679305, country: 'India' }
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea5'),
+    name: 'Amna',
+    course: 'Science',
+    marks: 90,
+    dob: ISODate('2003-08-23T00:00:00.000Z'),
+    isPassed: true,
+    joiningdate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry', 'Biology' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' }
+  },
+  {
+    _id: ObjectId('68fb217ba685db7566cebea8'),
+    name: 'Zeba',
+    course: 'Science',
+    marks: 95,
+    dob: ISODate('2005-09-04T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' }
+  }
+]
+7)Sort results by marks (highest first) and limit to 3 results.
+
+School> db.Students.find().sort({marks:-1}).limit(3)
+[
+  {
+    _id: ObjectId('68fb05dda685db7566cebea4'),
+    name: 'Aisha',
+    course: 'Science',
+    marks: 105,
+    dob: ISODate('2004-06-10T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),
+    subjects: [ 'Physics', 'Chemistry', 'Computer Science', 'Maths' ],      
+    address: { city: 'Palakkad', pin: 679305, country: 'India' }
+  },
+  {
+    _id: ObjectId('68fb217ba685db7566cebea8'),
+    name: 'Zeba',
+    course: 'Science',
+    marks: 95,
+    dob: ISODate('2005-09-04T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' }
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea5'),
+    name: 'Amna',
+    course: 'Science',
+    marks: 90,
+    dob: ISODate('2003-08-23T00:00:00.000Z'),
+    isPassed: true,
+    joiningdate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry', 'Biology' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' }
+  }
+]
+
+8)Use a regex query to find students whose name starts with ‘A’.
+School> db.Students.find({name:{$regex:"^A"}}).pretty()
+[
+  {
+    _id: ObjectId('68fb05dda685db7566cebea4'),
+    name: 'Aisha',
+    course: 'Science',
+    marks: 105,
+    dob: ISODate('2004-06-10T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),
+    subjects: [ 'Physics', 'Chemistry', 'Computer Science', 'Maths' ],      
+    address: { city: 'Palakkad', pin: 679305, country: 'India' }
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea5'),
+    name: 'Amna',
+    course: 'Science',
+    marks: 90,
+    dob: ISODate('2003-08-23T00:00:00.000Z'),
+    isPassed: true,
+    joiningdate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry', 'Biology' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' }
+  }
+]
+
+9)Loop through all documents using forEach() and print student names.
+
+School> db.Students.find().forEach(doc=>print("Name:"+doc.name)
+...
+...                                                                         
+... )                                                                       
+Name:Aisha
+Name:Amna
+Name:Bincy
+Name:Mia
+Name:Zeba
