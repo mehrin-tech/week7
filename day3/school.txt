@@ -1,0 +1,1132 @@
+Tasks:-
+ Use the same school database and students collection.
+
+test> show dbs
+Sample  68.00 KiB
+School  68.00 KiB
+admin   40.00 KiB
+config  36.00 KiB
+local   72.00 KiB
+test> use School
+switched to db School
+School> db
+School
+School> db.Students.find().pretty()
+[
+  {
+    _id: ObjectId('68fb05dda685db7566cebea4'),
+    name: 'Aisha',
+    course: 'Science',
+    marks: 105,
+    dob: ISODate('2004-06-10T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),
+    subjects: [ 'Physics', 'Chemistry', 'Computer Science', 'Maths' ],      
+    address: { city: 'Palakkad', pin: 679305, country: 'India' }
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea5'),
+    name: 'Amna',
+    course: 'Science',
+    marks: 90,
+    dob: ISODate('2003-08-23T00:00:00.000Z'),
+    isPassed: true,
+    joiningdate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry', 'Biology' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' }
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea6'),
+    name: 'Bincy',
+    course: 'Humanities',
+    marks: 55,
+    dob: ISODate('2002-09-21T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-11T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Sociology', 'Political Science' ],
+    address: { city: 'Malappuram', pin: 673098, country: 'India' }
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea7'),
+    name: 'Mia',
+    course: 'Commerce',
+    marks: 75,
+    dob: ISODate('2002-06-24T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-23T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Computer Application', 'Business' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' }
+  },
+  {
+    _id: ObjectId('68fb217ba685db7566cebea8'),
+    name: 'Zeba',
+    course: 'Science',
+    marks: 95,
+    dob: ISODate('2005-09-04T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' }
+  }
+]
+ Add a new field attendance: 90 for all students using $set.
+School> db.Students.updateMany({},{$set:{attendance:90}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 5,
+  modifiedCount: 5,
+  upsertedCount: 0
+}
+School> db.Students.find().pretty()
+[
+  {
+    _id: ObjectId('68fb05dda685db7566cebea4'),
+    name: 'Aisha',
+    course: 'Science',
+    marks: 105,
+    dob: ISODate('2004-06-10T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),
+    subjects: [ 'Physics', 'Chemistry', 'Computer Science', 'Maths' ],      
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 90
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea5'),
+    name: 'Amna',
+    course: 'Science',
+    marks: 90,
+    dob: ISODate('2003-08-23T00:00:00.000Z'),
+    isPassed: true,
+    joiningdate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry', 'Biology' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 90
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea6'),
+    name: 'Bincy',
+    course: 'Humanities',
+    marks: 55,
+    dob: ISODate('2002-09-21T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-11T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Sociology', 'Political Science' ],
+    address: { city: 'Malappuram', pin: 673098, country: 'India' },
+    attendance: 90
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea7'),
+    name: 'Mia',
+    course: 'Commerce',
+    marks: 75,
+    dob: ISODate('2002-06-24T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-23T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Computer Application', 'Business' ],
+    name: 'Mia',
+    course: 'Commerce',
+    marks: 75,
+    dob: ISODate('2002-06-24T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-23T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Computer Application', 'Business' ],
+    dob: ISODate('2002-06-24T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-23T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Computer Application', 'Business' ],
+    isPassed: true,
+    joiningDate: ISODate('2025-06-23T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Computer Application', 'Business' ],
+    joiningDate: ISODate('2025-06-23T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Computer Application', 'Business' ],
+    subjects: [ 'Economics', 'Computer Application', 'Business' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 90
+  },
+  {
+    _id: ObjectId('68fb217ba685db7566cebea8'),
+    name: 'Zeba',
+    course: 'Science',
+    marks: 95,
+    dob: ISODate('2005-09-04T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 90
+  }
+]
+
+ Rename field marks → totalMarks using $rename.
+School> db.Students.updateMany({},{$rename:{marks:"totalMarks"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 5,
+  modifiedCount: 5,
+  upsertedCount: 0
+}
+School> db.Students.find().pretty()
+[
+  {
+    _id: ObjectId('68fb05dda685db7566cebea4'),
+    name: 'Aisha',
+    course: 'Science',
+    dob: ISODate('2004-06-10T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),
+    subjects: [ 'Physics', 'Chemistry', 'Computer Science', 'Maths' ],      
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 90,
+    totalMarks: 105
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea5'),
+    name: 'Amna',
+    course: 'Science',
+    dob: ISODate('2003-08-23T00:00:00.000Z'),
+    isPassed: true,
+    joiningdate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry', 'Biology' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 90,
+    totalMarks: 90
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea6'),
+    name: 'Bincy',
+    course: 'Humanities',
+    dob: ISODate('2002-09-21T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-11T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Sociology', 'Political Science' ],
+    address: { city: 'Malappuram', pin: 673098, country: 'India' },
+    attendance: 90,
+    totalMarks: 55
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea7'),
+    name: 'Mia',
+    course: 'Commerce',
+    dob: ISODate('2002-06-24T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-23T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Computer Application', 'Business' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 90,
+    totalMarks: 75
+  },
+  {
+    _id: ObjectId('68fb217ba685db7566cebea8'),
+    name: 'Zeba',
+    course: 'Science',
+    dob: ISODate('2005-09-04T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 90,
+    totalMarks: 95
+  }
+]
+
+
+ Increase attendance by 5 using $inc.
+
+School> db.Students.updateMany({},{$inc:{attendance:5}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 5,
+  modifiedCount: 5,
+  upsertedCount: 0
+}
+School> db.Students.find().pretty()
+[
+  {
+    _id: ObjectId('68fb05dda685db7566cebea4'),
+    name: 'Aisha',
+    course: 'Science',
+    dob: ISODate('2004-06-10T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),
+    subjects: [ 'Physics', 'Chemistry', 'Computer Science', 'Maths' ],      
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 95,
+    totalMarks: 105
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea5'),
+    name: 'Amna',
+    course: 'Science',
+    dob: ISODate('2003-08-23T00:00:00.000Z'),
+    isPassed: true,
+    joiningdate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry', 'Biology' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    totalMarks: 90
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea6'),
+    name: 'Bincy',
+    course: 'Humanities',
+    dob: ISODate('2002-09-21T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-11T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Sociology', 'Political Science' ],
+    address: { city: 'Malappuram', pin: 673098, country: 'India' },
+    attendance: 95,
+    totalMarks: 55
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea7'),
+    name: 'Mia',
+    course: 'Commerce',
+    dob: ISODate('2002-06-24T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-23T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Computer Application', 'Business' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    totalMarks: 75
+  },
+  {
+    _id: ObjectId('68fb217ba685db7566cebea8'),
+    name: 'Zeba',
+    course: 'Science',
+    dob: ISODate('2005-09-04T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 95,
+    totalMarks: 95
+  }
+]
+
+Add a new array field activities and push values like “Sports”, “Music”.
+School> db.Students.updateMany({},{$set:{activities:[]}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 5,
+  modifiedCount: 5,
+  upsertedCount: 0
+}
+School> db.Students.find()
+[
+  {
+    _id: ObjectId('68fb05dda685db7566cebea4'),
+    name: 'Aisha',
+    course: 'Science',
+    dob: ISODate('2004-06-10T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),
+    subjects: [ 'Physics', 'Chemistry', 'Computer Science', 'Maths' ],      
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 95,
+    totalMarks: 105,
+    activities: []
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea5'),
+    name: 'Amna',
+    course: 'Science',
+    dob: ISODate('2003-08-23T00:00:00.000Z'),
+    isPassed: true,
+    joiningdate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry', 'Biology' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    totalMarks: 90,
+    activities: []
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea6'),
+    name: 'Bincy',
+    course: 'Humanities',
+    dob: ISODate('2002-09-21T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-11T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Sociology', 'Political Science' ],
+    address: { city: 'Malappuram', pin: 673098, country: 'India' },
+    attendance: 95,
+    totalMarks: 55,
+    activities: []
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea7'),
+    name: 'Mia',
+    course: 'Commerce',
+    dob: ISODate('2002-06-24T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-23T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Computer Application', 'Business' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    totalMarks: 75,
+    activities: []
+  },
+  {
+    _id: ObjectId('68fb217ba685db7566cebea8'),
+    name: 'Zeba',
+    course: 'Science',
+    dob: ISODate('2005-09-04T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 95,
+    totalMarks: 95,
+    activities: []
+  }
+]//first i using $set add new field  activities :[] empty array
+School> db.Students.updateMany({},{$push:{activities:{$each:["Sports","Music
+"]}}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 5,
+  modifiedCount: 5,
+  upsertedCount: 0
+}
+School> db.Students.find()
+[
+  {
+    _id: ObjectId('68fb05dda685db7566cebea4'),
+    name: 'Aisha',
+    course: 'Science',
+    dob: ISODate('2004-06-10T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),
+    subjects: [ 'Physics', 'Chemistry', 'Computer Science', 'Maths' ],      
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 95,
+    totalMarks: 105,
+    activities: [ 'Sports', 'Music' ]
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea5'),
+    name: 'Amna',
+    course: 'Science',
+    dob: ISODate('2003-08-23T00:00:00.000Z'),
+    isPassed: true,
+    joiningdate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry', 'Biology' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    totalMarks: 90,
+    activities: [ 'Sports', 'Music' ]
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea6'),
+    name: 'Bincy',
+    course: 'Humanities',
+    dob: ISODate('2002-09-21T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-11T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Sociology', 'Political Science' ],
+    address: { city: 'Malappuram', pin: 673098, country: 'India' },
+    attendance: 95,
+    totalMarks: 55,
+    activities: [ 'Sports', 'Music' ]
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea7'),
+    name: 'Mia',
+    course: 'Commerce',
+    dob: ISODate('2002-06-24T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-23T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Computer Application', 'Business' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    totalMarks: 75,
+    activities: [ 'Sports', 'Music' ]
+  },
+  {
+    _id: ObjectId('68fb217ba685db7566cebea8'),
+    name: 'Zeba',
+    course: 'Science',
+    dob: ISODate('2005-09-04T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 95,
+    totalMarks: 95,
+    activities: [ 'Sports', 'Music' ]
+  }
+]//then i using $push and $each multiple values in activities field.
+
+*Add “Art” to all activities using $addToSet.
+School> db.Students.updateMany({},{$addToSet:{activities:"Arts"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 5,
+  modifiedCount: 5,
+  upsertedCount: 0
+}
+School> db.Students.find()
+[
+  {
+    _id: ObjectId('68fb05dda685db7566cebea4'),
+    name: 'Aisha',
+    course: 'Science',
+    dob: ISODate('2004-06-10T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),
+    subjects: [ 'Physics', 'Chemistry', 'Computer Science', 'Maths' ],      
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 95,
+    totalMarks: 105,
+    activities: [ 'Sports', 'Music', 'Arts' ]
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea5'),
+    name: 'Amna',
+    course: 'Science',
+    dob: ISODate('2003-08-23T00:00:00.000Z'),
+    isPassed: true,
+    joiningdate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry', 'Biology' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    totalMarks: 90,
+    activities: [ 'Sports', 'Music', 'Arts' ]
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea6'),
+    name: 'Bincy',
+    course: 'Humanities',
+    dob: ISODate('2002-09-21T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-11T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Sociology', 'Political Science' ],
+    address: { city: 'Malappuram', pin: 673098, country: 'India' },
+    attendance: 95,
+    totalMarks: 55,
+    activities: [ 'Sports', 'Music', 'Arts' ]
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea7'),
+    name: 'Mia',
+    course: 'Commerce',
+    dob: ISODate('2002-06-24T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-23T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Computer Application', 'Business' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    totalMarks: 75,
+    activities: [ 'Sports', 'Music', 'Arts' ]
+  },
+  {
+    _id: ObjectId('68fb217ba685db7566cebea8'),
+    name: 'Zeba',
+    course: 'Science',
+    dob: ISODate('2005-09-04T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 95,
+    totalMarks: 95,
+    activities: [ 'Sports', 'Music', 'Arts' ]
+  }
+]
+//add only if not alredy prsnt that value.
+
+
+ Remove “Music” from activities using $pull.
+
+School> db.Students.updateMany({},{$pull:{activities:"Music"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 5,
+  modifiedCount: 5,
+  upsertedCount: 0
+}
+School> db.Students.find()
+[
+  {
+    _id: ObjectId('68fb05dda685db7566cebea4'),
+    name: 'Aisha',
+    course: 'Science',
+    dob: ISODate('2004-06-10T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),
+    subjects: [ 'Physics', 'Chemistry', 'Computer Science', 'Maths' ],      
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 95,
+    totalMarks: 105,
+    activities: [ 'Sports', 'Arts' ]
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea5'),
+    name: 'Amna',
+    course: 'Science',
+    dob: ISODate('2003-08-23T00:00:00.000Z'),
+    isPassed: true,
+    joiningdate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry', 'Biology' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    totalMarks: 90,
+    activities: [ 'Sports', 'Arts' ]
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea6'),
+    name: 'Bincy',
+    course: 'Humanities',
+    dob: ISODate('2002-09-21T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-11T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Sociology', 'Political Science' ],
+    address: { city: 'Malappuram', pin: 673098, country: 'India' },
+    attendance: 95,
+    totalMarks: 55,
+    activities: [ 'Sports', 'Arts' ]
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea7'),
+    name: 'Mia',
+    course: 'Commerce',
+    dob: ISODate('2002-06-24T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-23T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Computer Application', 'Business' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    totalMarks: 75,
+    activities: [ 'Sports', 'Arts' ]
+  },
+  {
+    _id: ObjectId('68fb217ba685db7566cebea8'),
+    name: 'Zeba',
+    course: 'Science',
+    dob: ISODate('2005-09-04T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 95,
+    totalMarks: 95,
+    activities: [ 'Sports', 'Arts' ]
+  }
+]
+//rmve specific vals from array
+ Upsert a student named Neha if not already present.
+School> db.Students.updateOne({name:"Neha"},{$set:{course:"Science",dob:new Date("2003-09-20"),isPassed:true,joiningDate:new Date("2025-06-10"),subjects:["Maths","Physics","Chemistry"],address:{city:"Thrissur",pin:670890,country:"India"},attendance:95,totalMarks:85,activities:["Sports","Arts"]}},{upsert
+upsert:true})
+{
+  acknowledged: true,
+  insertedId: ObjectId('6905a6dd987b4c6ed9f04c44'),
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 1
+}
+School> db.Students.find()
+[
+  {
+    _id: ObjectId('68fb05dda685db7566cebea4'),
+    name: 'Aisha',
+    course: 'Science',
+    dob: ISODate('2004-06-10T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),
+    subjects: [ 'Physics', 'Chemistry', 'Computer Science', 'Maths' ],      
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 95,
+    totalMarks: 105,
+    activities: [ 'Sports', 'Arts' ]
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea5'),
+    name: 'Amna',
+    course: 'Science',
+    dob: ISODate('2003-08-23T00:00:00.000Z'),
+    isPassed: true,
+    joiningdate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry', 'Biology' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    totalMarks: 90,
+    activities: [ 'Sports', 'Arts' ]
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea6'),
+    name: 'Bincy',
+    course: 'Humanities',
+    dob: ISODate('2002-09-21T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-11T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Sociology', 'Political Science' ],
+    address: { city: 'Malappuram', pin: 673098, country: 'India' },
+    attendance: 95,
+    totalMarks: 55,
+    activities: [ 'Sports', 'Arts' ]
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea7'),
+    name: 'Mia',
+    course: 'Commerce',
+    dob: ISODate('2002-06-24T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-23T00:00:00.000Z'),
+    subjects: [ 'Economics', 'Computer Application', 'Business' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    totalMarks: 75,
+    activities: [ 'Sports', 'Arts' ]
+  },
+  {
+    _id: ObjectId('68fb217ba685db7566cebea8'),
+    name: 'Zeba',
+    course: 'Science',
+    dob: ISODate('2005-09-04T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 95,
+    totalMarks: 95,
+    activities: [ 'Sports', 'Arts' ]
+  },
+  {
+    _id: ObjectId('6905a6dd987b4c6ed9f04c44'),
+    name: 'Neha',
+    activities: [ 'Sports', 'Arts' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    course: 'Science',
+    dob: ISODate('2003-09-20T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    totalMarks: 85
+  }
+]
+
+ Limit activities to 3 items using $push with $slice.
+
+School> db.Students.updateMany({},{$push:{activities:{$each:["Dance"],$slice:-3}}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 6,
+  modifiedCount: 6,
+  upsertedCount: 0
+}
+School> db.Students.find().pretty()
+[
+  {
+    _id: ObjectId('68fb05dda685db7566cebea4'),
+    name: 'Aisha',
+    course: 'Science',
+    dob: ISODate('2004-06-10T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),
+    subjects: [ 'Physics', 'Chemistry', 'Computer Science', 'Maths' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 95,
+    totalMarks: 105,
+    activities: [ 'Sports', 'Arts', 'Dance' ]
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea5'),
+    name: 'Amna',
+    course: 'Science',
+    dob: ISODate('2003-08-23T00:00:00.000Z'),
+    isPassed: true,
+    joiningdate: ISODate('2025-07-10T00:00:00.000Z'),      
+    subjects: [ 'Maths', 'Physics', 'Chemistry', 'Biology' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    totalMarks: 90,
+    activities: [ 'Sports', 'Arts', 'Dance' ]
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea6'),
+    name: 'Bincy',
+    course: 'Humanities',
+    dob: ISODate('2002-09-21T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-11T00:00:00.000Z'),      
+    subjects: [ 'Economics', 'Sociology', 'Political Science' ],
+    address: { city: 'Malappuram', pin: 673098, country: 'India' },
+    attendance: 95,
+    totalMarks: 55,
+    activities: [ 'Sports', 'Arts', 'Dance' ]
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea7'),
+    name: 'Mia',
+    course: 'Commerce',
+    dob: ISODate('2002-06-24T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-23T00:00:00.000Z'),      
+    subjects: [ 'Economics', 'Computer Application', 'Business' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    totalMarks: 75,
+    activities: [ 'Sports', 'Arts', 'Dance' ]
+  },
+  {
+    _id: ObjectId('68fb217ba685db7566cebea8'),
+    name: 'Zeba',
+    course: 'Science',
+    dob: ISODate('2005-09-04T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-07-10T00:00:00.000Z'),      
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 95,
+    totalMarks: 95,
+    activities: [ 'Sports', 'Arts', 'Dance' ]
+  },
+  {
+    _id: ObjectId('6905a6dd987b4c6ed9f04c44'),
+    name: 'Neha',
+    activities: [ 'Sports', 'Arts', 'Dance' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    course: 'Science',
+    dob: ISODate('2003-09-20T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),      
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    totalMarks: 85
+  }
+]
+
+*Add a lastUpdated field using $currentDate.
+School> db.Students.updateMany({},{$currentDate:{lastUpdate
+lastUpdated:true}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 6,
+  modifiedCount: 6,
+  upsertedCount: 0
+}
+School> db.Students.find().pretty()
+[
+  {
+    _id: ObjectId('68fb05dda685db7566cebea4'),
+    name: 'Aisha',
+    course: 'Science',
+    dob: ISODate('2004-06-10T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),      
+    subjects: [ 'Physics', 'Chemistry', 'Computer Science',
+ 'Maths' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 95,
+    totalMarks: 105,
+    activities: [ 'Sports', 'Arts', 'Dance' ],
+    lastUpdated: ISODate('2025-11-13T05:29:30.769Z')       
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea5'),
+    name: 'Amna',
+    course: 'Science',
+    dob: ISODate('2003-08-23T00:00:00.000Z'),
+    isPassed: true,
+    joiningdate: ISODate('2025-07-10T00:00:00.000Z'),      
+    subjects: [ 'Maths', 'Physics', 'Chemistry', 'Biology' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    totalMarks: 90,
+    activities: [ 'Sports', 'Arts', 'Dance' ],
+    lastUpdated: ISODate('2025-11-13T05:29:30.770Z')       
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea6'),
+    name: 'Bincy',
+    course: 'Humanities',
+    dob: ISODate('2002-09-21T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-11T00:00:00.000Z'),      
+    subjects: [ 'Economics', 'Sociology', 'Political Science' ],
+    address: { city: 'Malappuram', pin: 673098, country: 'India' },
+    attendance: 95,
+    totalMarks: 55,
+    activities: [ 'Sports', 'Arts', 'Dance' ],
+    lastUpdated: ISODate('2025-11-13T05:29:30.771Z')       
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea7'),
+    name: 'Mia',
+    course: 'Commerce',
+    dob: ISODate('2002-06-24T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-23T00:00:00.000Z'),      
+    subjects: [ 'Economics', 'Computer Application', 'Business' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    totalMarks: 75,
+    activities: [ 'Sports', 'Arts', 'Dance' ],
+    lastUpdated: ISODate('2025-11-13T05:29:30.771Z')       
+  },
+  {
+    _id: ObjectId('68fb217ba685db7566cebea8'),
+    name: 'Zeba',
+    course: 'Science',
+    dob: ISODate('2005-09-04T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-07-10T00:00:00.000Z'),      
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 95,
+    totalMarks: 95,
+    activities: [ 'Sports', 'Arts', 'Dance' ],
+    lastUpdated: ISODate('2025-11-13T05:29:30.771Z')       
+  },
+  {
+    _id: ObjectId('6905a6dd987b4c6ed9f04c44'),
+    name: 'Neha',
+    activities: [ 'Sports', 'Arts', 'Dance' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    course: 'Science',
+    dob: ISODate('2003-09-20T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),      
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    totalMarks: 85,
+    lastUpdated: ISODate('2025-11-13T05:29:30.771Z')       
+  }
+]
+
+*Update only a specific array element using arrayFilters.
+
+
+*Upsert a student named Neha if not already present.
+
+School> db.Students.updateOne({name:"Neha"},{$set:{course:"Science",attendance:90,totalMarks:85,activities:["Sports","
+Arts"]},$currentDate:{lastUpdated:true}},{upsert:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+School> db.Students.find().pretty()
+[
+  {
+    _id: ObjectId('68fb05dda685db7566cebea4'),
+    name: 'Aisha',
+    course: 'Science',
+    dob: ISODate('2004-06-10T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),      
+    subjects: [ 'Physics', 'Chemistry', 'Computer Science',
+ 'Maths' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 95,
+    totalMarks: 105,
+    activities: [ 'Sports', 'Arts', 'Dance' ],
+    lastUpdated: ISODate('2025-11-13T05:29:30.769Z')       
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea5'),
+    name: 'Amna',
+    course: 'Science',
+    dob: ISODate('2003-08-23T00:00:00.000Z'),
+    isPassed: true,
+    joiningdate: ISODate('2025-07-10T00:00:00.000Z'),      
+    subjects: [ 'Maths', 'Physics', 'Chemistry', 'Biology' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    totalMarks: 90,
+    activities: [ 'Sports', 'Arts', 'Dance' ],
+    lastUpdated: ISODate('2025-11-13T05:29:30.770Z')       
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea6'),
+    name: 'Bincy',
+    course: 'Humanities',
+    dob: ISODate('2002-09-21T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-11T00:00:00.000Z'),      
+    subjects: [ 'Economics', 'Sociology', 'Political Science' ],
+    address: { city: 'Malappuram', pin: 673098, country: 'India' },
+    attendance: 95,
+    totalMarks: 55,
+    activities: [ 'Sports', 'Arts', 'Dance' ],
+    lastUpdated: ISODate('2025-11-13T05:29:30.771Z')       
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea7'),
+    name: 'Mia',
+    course: 'Commerce',
+    dob: ISODate('2002-06-24T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-23T00:00:00.000Z'),      
+    subjects: [ 'Economics', 'Computer Application', 'Business' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    totalMarks: 75,
+    activities: [ 'Sports', 'Arts', 'Dance' ],
+    lastUpdated: ISODate('2025-11-13T05:29:30.771Z')       
+  },
+  {
+    _id: ObjectId('68fb217ba685db7566cebea8'),
+    name: 'Zeba',
+    course: 'Science',
+    dob: ISODate('2005-09-04T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-07-10T00:00:00.000Z'),      
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 95,
+    totalMarks: 95,
+    activities: [ 'Sports', 'Arts', 'Dance' ],
+    lastUpdated: ISODate('2025-11-13T05:29:30.771Z')       
+  },
+  {
+    _id: ObjectId('6905a6dd987b4c6ed9f04c44'),
+    name: 'Neha',
+    activities: [ 'Sports', 'Arts' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 90,
+    course: 'Science',
+    dob: ISODate('2003-09-20T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),      
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    totalMarks: 85,
+    lastUpdated: ISODate('2025-11-13T05:33:54.490Z')       
+  }
+]
+
+*Use findOneAndUpdate() to modify one student and return the updated document.
+
+School> db.Students.findOneAndUpdate({name:"Aisha"},{$set:{attendance:50},$currentDate:{lastUpdated:true}},{returnDocu
+returnDocument:"after"})
+{
+  _id: ObjectId('68fb05dda685db7566cebea4'),
+  name: 'Aisha',
+  course: 'Science',
+  dob: ISODate('2004-06-10T00:00:00.000Z'),
+  isPassed: true,
+  joiningDate: ISODate('2025-06-10T00:00:00.000Z'),        
+  subjects: [ 'Physics', 'Chemistry', 'Computer Science', 'Maths' ],
+  address: { city: 'Palakkad', pin: 679305, country: 'India' },
+  attendance: 50,
+  totalMarks: 105,
+  activities: [ 'Sports', 'Arts', 'Dance' ],
+  lastUpdated: ISODate('2025-11-13T05:40:42.881Z')
+}
+
+
+ Perform a bulkWrite with three operations:-
+ Update one student’s attendance.
+ Insert a new student.
+School> db.Students.bulkWrite([{updateOne:{filter:{name:"Neha"},update:{$set:{attendance:100},$currentDate:{lastUpdated:true}}}},{insertOne:{document:{name:"Shafna",course:"Maths",dob:ISODate("2006-05-12T00:00:00.000Z"),attendance:90,totalMarks:89,activities:["Sports","Arts"],lastUpdated:new Date()}}},{deleteOne:{filter:{course:"History"}}}])
+{
+  acknowledged: true,
+  insertedCount: 1,
+  insertedIds: { '1': ObjectId('691570d001ba7010c2cebea4') },
+  matchedCount: 1,
+  modifiedCount: 1,
+  deletedCount: 0,
+  upsertedCount: 0,
+  upsertedIds: {}
+}
+ Delete one student whose course = &quot;History&quot;.
+ acknowledged: true, deletedCount: 1 
+
+ Show the final updated data using find().pretty().
+ School> db.Students.find().pretty()
+[
+  {
+    _id: ObjectId('68fb05dda685db7566cebea4'),
+    name: 'Aisha',
+    course: 'Science',
+    dob: ISODate('2004-06-10T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),      
+    subjects: [ 'Physics', 'Chemistry', 'Computer Science',
+ 'Maths' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 50,
+    totalMarks: 105,
+    activities: [ 'Sports', 'Arts', 'Dance' ],
+    lastUpdated: ISODate('2025-11-13T05:40:42.881Z')       
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea5'),
+    name: 'Amna',
+    course: 'Science',
+    dob: ISODate('2003-08-23T00:00:00.000Z'),
+    isPassed: true,
+    joiningdate: ISODate('2025-07-10T00:00:00.000Z'),      
+    subjects: [ 'Maths', 'Physics', 'Chemistry', 'Biology' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    totalMarks: 90,
+    activities: [ 'Sports', 'Arts', 'Dance' ],
+    lastUpdated: ISODate('2025-11-13T05:29:30.770Z')       
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea7'),
+    name: 'Mia',
+    course: 'Commerce',
+    dob: ISODate('2002-06-24T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-23T00:00:00.000Z'),      
+    subjects: [ 'Economics', 'Computer Application', 'Business' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    totalMarks: 75,
+    activities: [ 'Sports', 'Arts', 'Dance' ],
+    lastUpdated: ISODate('2025-11-13T05:29:30.771Z')       
+  },
+  {
+    _id: ObjectId('68fb217ba685db7566cebea8'),
+    name: 'Zeba',
+    course: 'Science',
+    dob: ISODate('2005-09-04T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-07-10T00:00:00.000Z'),      
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 95,
+    totalMarks: 95,
+    activities: [ 'Sports', 'Arts', 'Dance' ],
+    lastUpdated: ISODate('2025-11-13T05:29:30.771Z')       
+  },
+  {
+    _id: ObjectId('6905a6dd987b4c6ed9f04c44'),
+    name: 'Neha',
+    activities: [ 'Sports', 'Arts' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 100,
+    course: 'Science',
+    dob: ISODate('2003-09-20T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),      
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    totalMarks: 85,
+    lastUpdated: ISODate('2025-11-13T05:46:56.281Z')       
+  },
+  {
+    _id: ObjectId('691570d001ba7010c2cebea4'),
+    name: 'Shafna',
+    course: 'Maths',
+    dob: ISODate('2006-05-12T00:00:00.000Z'),
+    attendance: 90,
+    totalMarks: 89,
+    activities: [ 'Sports', 'Arts' ],
+    lastUpdated: ISODate('2025-11-13T05:46:56.266Z')       
+  }
+]
+School>

@@ -1,0 +1,217 @@
+========replace and find modift methds=====
+
+1)replaceOne()
+*only save new data
+*old fields removd automaticlly
+*_id only save mongoDb
+
+test> show dbs
+School  68.00 KiB
+admin   40.00 KiB
+config  36.00 KiB
+local   72.00 KiB
+test> use Sample
+switched to db Sample
+Sample> db
+Sample
+Sample> db.Sample.insertOne({name:"Merlin",course:"Science",marks:80})
+{
+  acknowledged: true,
+  insertedId: ObjectId('69044736408805ab67cebea4')
+Sample> db.Sample.replaceOne({name:"Merlin"},{name:"Merlin",course:"Math",totalMarks:85,isPassed:true,joiningDate:new Date("2025-09-21")})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Sample> db.Sample.find().pretty()
+[
+  {
+    _id: ObjectId('69044736408805ab67cebea4'),
+    name: 'Merlin',
+    course: 'Math',
+    totalMarks: 85,
+    isPassed: true,
+    joiningDate: ISODate('2025-09-21T00:00:00.000Z')
+  }
+]
+
+======findOneAndUpdate=========
+it means first find a documnt and updated
+
+syntax:-
+db.collection.findOneAndUpdate(
+    {filter },//which docmnt to find
+    {update oprtions},// what to change(eg: $set,$inc,etc)
+    {options}//returnDocumnt,upsert
+)
+Sample> db.Sample.findOneAndUpdate({name:"Merlin"},{$set:{totalMtotalMarks:90}})
+{
+  _id: ObjectId('69044736408805ab67cebea4'),
+  name: 'Merlin',
+  course: 'Math',
+  totalMarks: 85,
+  isPassed: true,
+  joiningDate: ISODate('2025-09-21T00:00:00.000Z')
+}
+Sample> db.Sample.findOneAndUpdate({name:"Merlin"},{$set:{totalMarks:90}},{returnDocument:"after"})
+{
+  _id: ObjectId('69044736408805ab67cebea4'),
+  name: 'Merlin',
+  course: 'Math',
+  totalMarks: 90,
+  isPassed: true,
+  joiningDate: ISODate('2025-09-21T00:00:00.000Z')
+}
+Sample> db.Sample.findOneAndUpdate({name:"Merlin"},{$set:{totalMarks:90}},{returnDocument:"before"})
+{
+  _id: ObjectId('69044736408805ab67cebea4'),
+  name: 'Merlin',
+  course: 'Math',
+  totalMarks: 90,
+  isPassed: true,
+  joiningDate: ISODate('2025-09-21T00:00:00.000Z')
+}
+*$set and $inc opertors are used in this methd
+
+======findOneAndReplace======
+find 1 docmnt->then update the docmnt->return the docmnt
+
+syntax:-
+db.collection.findOneAndReplace(
+  { filter },
+  { replacementDocument},
+  { options }
+)
+
+Sample> db.Sample.findOneAndReplace({name:"Merlin"},{name:"Merlin",course:"Science",totalMarks:100,isPassed:true,attendance:80},{returnDocument:"after"})
+{
+  _id: ObjectId('69044736408805ab67cebea4'),
+  name: 'Merlin',
+  course: 'Science',
+  totalMarks: 100,
+  isPassed: true,
+  attendance: 80
+}
+Sample> db.Sample.find().pretty()
+[
+  {
+    _id: ObjectId('69044736408805ab67cebea4'),
+    name: 'Merlin',
+    course: 'Science',
+    totalMarks: 100,
+    isPassed: true,
+    attendance: 80
+  }
+]
+
+
+2nd example use upsert in findOneAndReplace
+Sample> db.Sample.findOneAndReplace({name:"Neha"},{name:"Neha",course:"CS",totalMarks:98,isPassed:true},{upsert:true,returnDocumreturnDocument:"after"})
+{
+  _id: ObjectId('69044de3987b4c6ed9f04c43'),
+  name: 'Neha',
+  course: 'CS',
+  totalMarks: 98,
+  isPassed: true
+}
+[ample> db.Sample.find().pretty()
+  {
+    _id: ObjectId('69044736408805ab67cebea4'),
+    name: 'Merlin',
+    course: 'Science',
+    totalMarks: 100,
+    isPassed: true,
+    attendance: 80
+  },
+  {
+    _id: ObjectId('69044de3987b4c6ed9f04c43'),
+    name: 'Neha',
+    course: 'CS',
+    totalMarks: 98,
+    isPassed: true
+  }
+]
+if neha exist->replce her record.otherwise insert a new one.
+$set and $inc operators are didnt use in this methd
+
+=====Array filters & positional operators====
+1)positional operator -$:-
+$ is used to updatethe first array element that matches a condition.its a shortcut for the 1st matching element in an array.
+
+syntax:-
+db.collection.updatOne({'arrayfield.fielname':filed value},
+{$set:{"arrayfield.$.fieldToUpdate":newvalue}})
+*$set->update opertor
+Sample>  db.Sample.insertOne({name:'Ameen',sub:[{name:"Math",marks:80},{name:"Science",marks:85},{name:"History",marks:70}]})
+  {
+    _id: ObjectId('69045d29408805ab67cebea5'),
+    name: 'Ameen',
+    sub: [
+      { name: 'Math', marks: 80 },
+      { name: 'Science', marks: 85 },
+      { name: 'History', marks: 70 }
+    ]
+  }
+  Sample> db.Sample.updateOne({"sub.name":"Science"},{$set:{"sub.$.marks":90}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+ {
+    _id: ObjectId('69045d29408805ab67cebea5'),
+    name: 'Ameen',
+    sub: [
+      { name: 'Math', marks: 80 },
+      { name: 'Science', marks: 90 },
+      { name: 'History', marks: 70 }
+    ]
+  }
+
+  //without $ positional operator in araay of objcts
+Sample> db.Sample.updateOne({"sub.name":"History"},{$set:{"sub.marks":95}})
+MongoServerError: Plan executor error during update :: caused by :: Cannot create field 'marks' in element {sub: [ { name: "Math", marks: 80 }, { name: "Science", marks: 90 }, { name: "History", marks: 70 } ]}
+
+we didnt use $ positioanl operator disply mongoserver err.bcoz  sub is array.arrayle obj ulla field update cheyyan use $ operator otherwise this type of err.
+
+2)Array filters=$[elem]=>update alll matching elements.
+syntx:-
+db.collction.updateONE(
+    {query condtn},
+    {$updateopertor:{"arrayfield.$[elem].fieldTupdate:'newvalue}},
+    {arrayFilters:[{elem.field:cndtn}]}//choose elmnts inside the arry where like name=""history.
+
+)
+ {name: 'Ameen',
+    sub: [
+      { name: 'Math', marks: 80 },
+      { name: 'Science', marks: 90 },
+      { name: 'History', marks: 70 }
+    ]
+  }
+
+Sample> db.Sample.updateOne({name:"Ameen"},{$set:{"sub.$[elem].marks":100}},{arrayFilters:[{"elem.name":"History"}]})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Sample> db.Sample.find({name:"Ameen"})
+[
+  {
+    _id: ObjectId('69045d29408805ab67cebea5'),
+    name: 'Ameen',
+    sub: [
+      { name: 'Math', marks: 80 },
+      { name: 'Science', marks: 90 },
+      { name: 'History', marks: 100 }
+    ]
+  }
+]
