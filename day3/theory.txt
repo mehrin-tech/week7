@@ -583,9 +583,56 @@ Sample> db.users.updateOne({name:"Hiba"},{$push:{activities:{$each:["Arts"],$pos
   },
 
   9)$slice:- control array length,remove oldest values and keep latsest value.
+$slice(-3):-show only first3
+-3:- show only last 3
 
+Sample> db.users.updateOne({name:"Neha"},{$push:{activities:{$each:["classical","cinematic"],$slice:-3}}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Sample> db.users.find({name:"Neha"})
+[
+  {
+    _id: ObjectId('69044de3987b4c6ed9f04c43'),
+    name: 'Neha',
+    course: 'CS',
+    isPassed: true,
+    attendance: 83,
+    Marks: 98,
+    lastUpdated: ISODate('2025-11-17T04:32:06.722Z'),      
+    activities: [ 'Music', 'classical', 'cinematic' ]      
+  }
+]
+Sample>
   10)$sort:-is used to order array elements or docmnts in a collctn ascending(1),descnding (-1)
-
+Sample> db.users.updateOne({name:"Neha"},{$push:{activities
+activities:{$each:[],$sort:-1}}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Sample> db.users.find({name:"Neha"})
+[
+  {
+    _id: ObjectId('69044de3987b4c6ed9f04c43'),
+    name: 'Neha',
+    course: 'CS',
+    isPassed: true,
+    attendance: 83,
+    Marks: 98,
+    lastUpdated: ISODate('2025-11-17T04:32:06.722Z'),      
+    activities: [ 'classical', 'cinematic', 'Music' ]      
+  }
+]
+Sample>//sort:-1:-descnding 
+sort:1->ascending order
   =======upsert option=====
   upsert means-update+insert
   it is used in update options like updteone and updateMany.
@@ -593,10 +640,45 @@ Sample> db.users.updateOne({name:"Hiba"},{$push:{activities:{$each:["Arts"],$pos
   if a docmnt matches the filter-update it
   if no documnt matches -insert a new docmnt with the given data.
  if data is exist ,updated.otherwise inserted.
-
+Sample> db.users.updateOne({name:"Neha"},{$set:{Marks:95}},
+{upsert:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Sample> db.users.find({name:"Neha"})
+[
+  {
+    _id: ObjectId('69044de3987b4c6ed9f04c43'),
+    name: 'Neha',
+    course: 'CS',
+    isPassed: true,
+    attendance: 83,
+    Marks: 95,
+    lastUpdated: ISODate('2025-11-17T04:32:06.722Z'),      
+    activities: [ 'classical', 'cinematic', 'Music' ]      
+  }
+]
+Sample>
  =====bulkWrite========
  it is used to perform multiple write opertn like insert,update,delete,replace in a single command.
  *its faster than doing multiple separet opertns,can execute ordered or unorderd operations.
+
+Sample> db.users.bulkWrite([{insertOne:{document:{name:"Hanah",course:"BSC Maths",Marks:80,isPassed:true}}},{updateOne:{filter:{name:"Hiba"},update:{$inc:{Marks:5}}}},{deleteOne
+deleteOne:{filter:{course:"Science"}}}])
+{
+  acknowledged: true,
+  insertedCount: 1,
+  insertedIds: { '0': ObjectId('691adf7f734aefebbdcebea4') },
+  matchedCount: 1,
+  modifiedCount: 1,
+  deletedCount: 1,
+  upsertedCount: 0,
+  upsertedIds: {}
+}
 
 ========replace & find-modify methods==========
 1)replaceOne():-remove a docmnt .replaced olddata&add new data.only save new data.old fields  removed automatically ,mongoDb save only id.docmntle ellm replce cheyyum.

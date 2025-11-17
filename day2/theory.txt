@@ -44,7 +44,7 @@ find() query cheyyumbol nammak yenthellam documnts venamennu filter cheyyananu q
 syntx :
 db.collction.find({field:{opertor:value}})
 eg:-
-db.students.find({marks:{${gt:80}}})
+db.students.find({marks:{$gt:80}})
 [
   { name: "Aisha", marks: 85 },
   { name: "Riya", marks: 92 },
@@ -68,7 +68,7 @@ $nin-not in a list
   { name: "Mehfil", marks: 45, course: "Science" }
 ]
 db.student.find({marks:{$lt:50}}) =>mehfil:45
-db.student.find({course:{$eq:"Science}})=>aisha,mehfil
+db.student.find({course:{$eq:"Science"})=>aisha,mehfil
 db.student.find({course:{$ne:"Maths}})=>aisha,neha,mehfil
 db.students.find({course:{$in:["science","history"]}})=>neha
 db.students.find({course:{$nin:["Meths"]}})=>aisha,neha,mehfil

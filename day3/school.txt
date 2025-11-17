@@ -907,6 +907,34 @@ School> db.Students.find().pretty()
 *Update only a specific array element using arrayFilters.
 
 
+School> db.Students.updateOne({name:"Neha"},{$set:{"activities.$[act]":"Guitarist"}},{arrayFilters:[{"act":"Arts"}]})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+School> db.Students.find({name:"Neha"})
+[
+  {
+    _id: ObjectId('6905a6dd987b4c6ed9f04c44'),
+    name: 'Neha',
+    activities: [ 'Sports', 'Guitarist' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 100,
+    course: 'Science',
+    dob: ISODate('2003-09-20T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),      
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    totalMarks: 85,
+    lastUpdated: ISODate('2025-11-13T05:46:56.281Z')       
+  }
+]
+School>
+
+
 *Upsert a student named Neha if not already present.
 
 School> db.Students.updateOne({name:"Neha"},{$set:{course:"Science",attendance:90,totalMarks:85,activities:["Sports","
