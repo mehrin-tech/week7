@@ -1,0 +1,710 @@
+========field Update operators:-=======
+
+1)$set:-update a field for a specific value
+example:-Sample> db.users.updateMany({},{$set:{college:"SNGSC"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 4,
+  upsertedCount: 0
+}
+output:-Sample> db.users.find().pretty()
+[
+  {
+    _id: ObjectId('69044736408805ab67cebea4'),
+    name: 'Merlin',
+    course: 'Science',
+    totalMarks: 95,
+    isPassed: true,
+    attendance: 78,
+    college: 'SNGSC'
+  },
+  {
+    _id: ObjectId('69044de3987b4c6ed9f04c43'),
+    name: 'Neha',
+    course: 'CS',
+    totalMarks: 98,
+    isPassed: true,
+    attendance: 78,
+    college: 'SNGSC'
+  },
+  {
+    _id: ObjectId('6913048f1895b0a224cebea6'),
+    name: 'Hiba',
+    course: 'BCA',
+    isPassed: true,
+    totalMarks: 70,
+    attendance: 78,
+    college: 'SNGSC'
+  },
+  {
+    _id: ObjectId('691305261895b0a224cebea7'),
+    name: 'Marsi',
+    course: 'BSC CS',
+    isPassed: true,
+    totalMarks: 75,
+    attendance: 78,
+    college: 'SNGSC'
+  }
+]
+
+2)$unset:-remove a field.remove or delete a field from docmnt
+Sample> db.users.updateMany({},{$unset:{college:""}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 4,
+  upsertedCount: 0
+}
+output:-
+Sample> db.users.find().pretty()
+[
+  {
+    _id: ObjectId('69044736408805ab67cebea4'),
+    name: 'Merlin',
+    course: 'Science',
+    totalMarks: 95,
+    isPassed: true,
+    attendance: 78
+  },
+  {
+    _id: ObjectId('69044de3987b4c6ed9f04c43'),
+    name: 'Neha',
+    course: 'CS',
+    totalMarks: 98,
+    isPassed: true,
+    attendance: 78
+  },
+  {
+    _id: ObjectId('6913048f1895b0a224cebea6'),
+    name: 'Hiba',
+    course: 'BCA',
+    isPassed: true,
+    totalMarks: 70,
+    attendance: 78
+  },
+  {
+    _id: ObjectId('691305261895b0a224cebea7'),
+    name: 'Marsi',
+    course: 'BSC CS',
+    isPassed: true,
+    totalMarks: 75,
+    attendance: 78
+  }
+]
+
+3)$inc:-it is used for incremnet/decremnt numeric values for marks,points incremnt 
+Sample> db.users.updateMany({},{$inc:{attendance:5}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 4,
+  upsertedCount: 0
+}
+output:-
+Sample> db.users.find().pretty()
+[
+  {
+    _id: ObjectId('69044736408805ab67cebea4'),
+    name: 'Merlin',
+    course: 'Science',
+    totalMarks: 95,
+    isPassed: true,
+    attendance: 83
+  },
+  {
+    _id: ObjectId('69044de3987b4c6ed9f04c43'),
+    name: 'Neha',
+    course: 'CS',
+    totalMarks: 98,
+    isPassed: true,
+    attendance: 83
+  },
+  {
+    _id: ObjectId('6913048f1895b0a224cebea6'),
+    name: 'Hiba',
+    course: 'BCA',
+    isPassed: true,
+    totalMarks: 70,
+    attendance: 83
+  },
+  {
+    _id: ObjectId('691305261895b0a224cebea7'),
+    name: 'Marsi',
+    course: 'BSC CS',
+    isPassed: true,
+    totalMarks: 75,
+    attendance: 83
+  }
+]
+
+4)$rename:-rename a field
+Sample> db.users.updateMany({},{$rename:{totalMarks:"Marks"
+}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 4,
+  upsertedCount: 0
+}
+
+Sample> db.users.find().pretty()
+[
+  {
+    _id: ObjectId('69044736408805ab67cebea4'),
+    name: 'Merlin',
+    course: 'Science',
+    isPassed: true,
+    attendance: 83,
+    Marks: 95
+  },
+  {
+    _id: ObjectId('69044de3987b4c6ed9f04c43'),
+    name: 'Neha',
+    course: 'CS',
+    isPassed: true,
+    attendance: 83,
+    Marks: 98
+  },
+  {
+    _id: ObjectId('6913048f1895b0a224cebea6'),
+    name: 'Hiba',
+    course: 'BCA',
+    isPassed: true,
+    attendance: 83,
+    Marks: 70
+  },
+  {
+    _id: ObjectId('691305261895b0a224cebea7'),
+    name: 'Marsi',
+    course: 'BSC CS',
+    isPassed: true,
+    attendance: 83,
+    Marks: 75
+  }
+]
+
+
+5)$mul:-is a numeric update operator.multiples a numeric field.
+eg:- salary,price marks double etc
+
+Sample> db.users.updateOne({name:"Marsi"},{$mul:{Marks:2}})
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+ {
+    _id: ObjectId('691305261895b0a224cebea7'),
+    name: 'Marsi',
+    course: 'BSC CS',
+    isPassed: true,
+    attendance: 83,
+    Marks: 150 //use $mul in this field
+  }
+]
+
+6)$min:-oru fieldil new value is less than old value change cheyyum. if new value is greater didnt work update opertor
+
+Sample> db.users.updateOne({name:"Hiba"},{$min:{Marks:75}})
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+
+   _id: ObjectId('6913048f1895b0a224cebea6'),
+    name: 'Hiba',
+    course: 'BCA',
+    isPassed: true,
+    attendance: 83,
+    Marks: 70 is not changed becose new value is greater than old value.
+
+    ex:-
+    Sample> db.users.updateOne({name:"Hiba"},{$min:{Marks:68}})
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+ {
+    _id: ObjectId('6913048f1895b0a224cebea6'),
+    name: 'Hiba',
+    course: 'BCA',
+    isPassed: true,
+    attendance: 83,
+    Marks: 68 //marks is changed becuse new value is less than oldvalue
+  },
+
+  7)$max:-In a field,if new value is greater than old value  updated.
+  opposite case of $min operator
+
+  Sample> db.users.updateOne({name:"Hiba"},{$max:{Marks:65}})
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 0,
+  upsertedCount: 0
+}//no changed becoz old value is greater than new value
+
+
+Sample> db.users.updateOne({name:"Hiba"},{$max:{Marks:75}})
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}//change new value is greater than old valu3e
+
+8)$currentDate:-
+In  a field add current date and time   set automatically.
+
+Sample> db.users.updateMany({},{$currentDate:{lastUpdated:t
+true}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 4,
+  upsertedCount: 0
+}
+Sample> db.users.find().pretty()
+[
+  {
+    _id: ObjectId('69044736408805ab67cebea4'),
+    name: 'Merlin',
+    course: 'Science',
+    isPassed: true,
+    attendance: 83,
+    Marks: 95,
+    lastUpdated: ISODate('2025-11-17T04:32:06.720Z')       
+  },
+  {
+    _id: ObjectId('69044de3987b4c6ed9f04c43'),
+    name: 'Neha',
+    course: 'CS',
+    isPassed: true,
+    attendance: 83,
+    Marks: 98,
+    lastUpdated: ISODate('2025-11-17T04:32:06.722Z')       
+  },
+  {
+    _id: ObjectId('6913048f1895b0a224cebea6'),
+    name: 'Hiba',
+    course: 'BCA',
+    isPassed: true,
+    attendance: 83,
+    Marks: 75,
+    lastUpdated: ISODate('2025-11-17T04:32:06.722Z')       
+  },
+  {
+    _id: ObjectId('691305261895b0a224cebea7'),
+    name: 'Marsi',
+    course: 'BSC CS',
+    isPassed: true,
+    attendance: 83,
+    Marks: 150,
+    lastUpdated: ISODate('2025-11-17T04:32:06.722Z')       
+  }
+]
+
+
+*====array update operators=======
+1)$push:-add a new value  to an array 
+
+Sample> db.users.updateMany({},{$push:{activities:"Arts"}})
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 4,
+  upsertedCount: 0
+}
+
+2)$each:- used for push a lot of values 
+
+Sample> db.users.updateMany({},{$push:{activities:{$each:["Drama","Yoga"]}}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 4,
+  upsertedCount: 0
+}
+Sample> db.users.find()
+[
+  {
+    _id: ObjectId('69044736408805ab67cebea4'),
+    name: 'Merlin',
+    course: 'Science',
+    isPassed: true,
+    attendance: 83,
+    Marks: 95,
+    lastUpdated: ISODate('2025-11-17T04:32:06.720Z'),      
+    activities: [ 'Arts', 'Drama', 'Yoga' ]
+  },
+  {
+    _id: ObjectId('69044de3987b4c6ed9f04c43'),
+    name: 'Neha',
+    course: 'CS',
+    isPassed: true,
+    attendance: 83,
+    Marks: 98,
+    lastUpdated: ISODate('2025-11-17T04:32:06.722Z'),      
+    activities: [ 'Arts', 'Drama', 'Yoga' ]
+  },
+  {
+    _id: ObjectId('6913048f1895b0a224cebea6'),
+    name: 'Hiba',
+    course: 'BCA',
+    isPassed: true,
+    attendance: 83,
+    Marks: 75,
+    lastUpdated: ISODate('2025-11-17T04:32:06.722Z'),      
+    activities: [ 'Arts', 'Drama', 'Yoga' ]
+  },
+  {
+    _id: ObjectId('691305261895b0a224cebea7'),
+    name: 'Marsi',
+    course: 'BSC CS',
+    isPassed: true,
+    attendance: 83,
+    Marks: 150,
+    lastUpdated: ISODate('2025-11-17T04:32:06.722Z'),      
+    activities: [ 'Arts', 'Drama', 'Yoga' ]
+  }
+]
+
+3)$addToSet:-add a value in to array.if its value  is already exist ,not added .it prevent duplicates
+
+Sample> db.users.updateMany({},{$addToSet:{activities:"Arts
+"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+Sample> db.users.find()
+[
+  {
+    _id: ObjectId('69044736408805ab67cebea4'),
+    name: 'Merlin',
+    course: 'Science',
+    isPassed: true,
+    attendance: 83,
+    Marks: 95,
+    lastUpdated: ISODate('2025-11-17T04:32:06.720Z'),      
+    activities: [ 'Arts', 'Drama', 'Yoga' ]
+  },
+  {
+    _id: ObjectId('69044de3987b4c6ed9f04c43'),
+    name: 'Neha',
+    course: 'CS',
+    isPassed: true,
+    attendance: 83,
+    Marks: 98,
+    lastUpdated: ISODate('2025-11-17T04:32:06.722Z'),      
+    activities: [ 'Arts', 'Drama', 'Yoga' ]
+  },
+  {
+    _id: ObjectId('6913048f1895b0a224cebea6'),
+    name: 'Hiba',
+    course: 'BCA',
+    isPassed: true,
+    attendance: 83,
+    Marks: 75,
+    lastUpdated: ISODate('2025-11-17T04:32:06.722Z'),      
+    activities: [ 'Arts', 'Drama', 'Yoga' ]
+  },
+  {
+    _id: ObjectId('691305261895b0a224cebea7'),
+    name: 'Marsi',
+    course: 'BSC CS',
+    isPassed: true,
+    attendance: 83,
+    Marks: 150,
+    lastUpdated: ISODate('2025-11-17T04:32:06.722Z'),      
+    activities: [ 'Arts', 'Drama', 'Yoga' ]
+  }
+]
+Sample>
+5)$pop:-remove a filed 1-last elemt,-1-first element
+Sample> db.users.updateMany({},{$pop:{activities:1}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 4,
+  upsertedCount: 0
+}
+activities: [ 'Arts', 'Drama', 'Yoga', 'Arts', 'Music',
+ 'Dance' ]
+7)$pull:-remove a specific value from an array
+
+Sample> db.users.updateMany({},{$pull:{activities:"Arts"}})
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 4,
+  upsertedCount: 0
+}
+Sample> db.users.find()
+[
+  {
+    _id: ObjectId('69044736408805ab67cebea4'),
+    name: 'Merlin',
+    course: 'Science',
+    isPassed: true,
+    attendance: 83,
+    Marks: 95,
+    lastUpdated: ISODate('2025-11-17T04:32:06.720Z'),      
+    activities: [ 'Drama', 'Yoga', 'Music', 'Dance' ]      
+  },
+  {
+    _id: ObjectId('69044de3987b4c6ed9f04c43'),
+    name: 'Neha',
+    course: 'CS',
+    isPassed: true,
+    attendance: 83,
+    Marks: 98,
+    lastUpdated: ISODate('2025-11-17T04:32:06.722Z'),      
+    activities: [ 'Drama', 'Yoga', 'Music', 'Dance' ]      
+  },
+  {
+    _id: ObjectId('6913048f1895b0a224cebea6'),
+    name: 'Hiba',
+    course: 'BCA',
+    isPassed: true,
+    attendance: 83,
+    Marks: 75,
+    lastUpdated: ISODate('2025-11-17T04:32:06.722Z'),      
+    activities: [ 'Drama', 'Yoga', 'Music', 'Dance' ]      
+  },
+  {
+    _id: ObjectId('691305261895b0a224cebea7'),
+    name: 'Marsi',
+    course: 'BSC CS',
+    isPassed: true,
+    attendance: 83,
+    Marks: 150,
+    lastUpdated: ISODate('2025-11-17T04:32:06.722Z'),      
+    activities: [ 'Drama', 'Yoga', 'Music', 'Dance' ]      
+  }
+]
+
+$pull:- specific elements  removed
+Sample> db.users.updateMany({},{$pull:{activities:"Arts"}})
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 4,
+  upsertedCount: 0
+}
+ $pull → first/last didnt deleted (that's $pop):- it will remove all amtching values ,not based on positional
+
+
+Sample> db.users.updateOne({name:"Hiba"},{$pull:{activities:"Yoga"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+
+
+
+
+  {
+    _id: ObjectId('6913048f1895b0a224cebea6'),
+    name: 'Hiba',
+    course: 'BCA',
+    isPassed: true,
+    attendance: 83,
+    Marks: 75,
+    lastUpdated: ISODate('2025-11-17T04:32:06.722Z'),      
+    activities: [ 'Drama', 'Music', 'Dance' ]
+  },
+ $pull → array cleaning operator
+
+ $pull → remove duplicates
+ $pull → objects + primitive values removed.
+
+
+ 9)$position:-insert a value at a specific index in an array.
+
+
+Sample> db.users.updateOne({name:"Hiba"},{$push:{activities:{$each:["Arts"],$position:1}}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+
+
+  {
+    _id: ObjectId('6913048f1895b0a224cebea6'),
+    name: 'Hiba',
+    course: 'BCA',
+    isPassed: true,
+    attendance: 83,
+    Marks: 75,
+    lastUpdated: ISODate('2025-11-17T04:32:06.722Z'),      
+    activities: [ 'Drama', 'Arts', 'Music', 'Dance' ]      
+  },
+
+  9)$slice:- control array length,remove oldest values and keep latsest value.
+
+  10)$sort:-is used to order array elements or docmnts in a collctn ascending(1),descnding (-1)
+
+  =======upsert option=====
+  upsert means-update+insert
+  it is used in update options like updteone and updateMany.
+
+  if a docmnt matches the filter-update it
+  if no documnt matches -insert a new docmnt with the given data.
+ if data is exist ,updated.otherwise inserted.
+
+ =====bulkWrite========
+ it is used to perform multiple write opertn like insert,update,delete,replace in a single command.
+ *its faster than doing multiple separet opertns,can execute ordered or unorderd operations.
+
+========replace & find-modify methods==========
+1)replaceOne():-remove a docmnt .replaced olddata&add new data.only save new data.old fields  removed automatically ,mongoDb save only id.docmntle ellm replce cheyyum.
+ Sample> db.users.replaceOne({name:"Marsi"},{name:"Marsi",Ma
+rks:90,course:"BSC CS"})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+ 
+ {
+    _id: ObjectId('691305261895b0a224cebea7'),
+    name: 'Marsi',
+    Marks: 90,
+    course: 'BSC CS'
+  }
+
+2)findOneAndUpdate():-
+findone docmnt and that matches the condtn,and update it.return that docmnt.$set,$inc operators use cheyyam.namukku venda fields mathrm update cheyym
+Sample> db.users.findOneAndUpdate({name:"Marsi"},{$set:{Marks:75}},{returnDocument:"after"})
+{
+  _id: ObjectId('691305261895b0a224cebea7'),
+  name: 'Marsi',
+  Marks: 75,
+  course: 'BSC CS'
+}
+Sample>
+
+3)findOneAndReplace():-
+similr to findOneAndUpdate.but full docmnt replced.old comnt fully chnge cheyth res return chyym.
+Sample> db.users.findOneAndReplace({name:"Marsi"},{name:"Ma
+rsi",Marks:75,course:"Science"},{returnDocument:"after"})
+{
+  _id: ObjectId('691305261895b0a224cebea7'),
+  name: 'Marsi',
+  Marks: 75,
+  course: 'Science'
+}
+
+=======array filters & positional operators========
+$-positional operator
+is used to update the firt elemnt in an array that matches a query cndtn.
+syntax:-
+db.collctn.updateone({"arrayField.subField":value},{$set:{"arrayField.$.fieldToUpdate":value}})
+
+$[elem]-array filters
+update multiple elemnts in an array  that  match a specicfic cndtn.used with arrayfilters option.
+
+syntx:-db.collection.updateOne({qeury cndtn},{$set:{"arrayField.$[elem].fieldToUpdate":new val}},{arrayFilters:[{"elem.field":cndtn}]})
+
+
+===existence and typescheck==========
+1)$exist:-oru field docmntil undo illayonn check cheyyunnu.true->filed undo nn filter cheyyunnu.false->field illatha docmnts find chyeyyn.
+Sample> db.users.find({Marks:{$exists:true}})
+[
+  {
+    _id: ObjectId('69044736408805ab67cebea4'),
+    name: 'Merlin',
+    course: 'Science',
+    isPassed: true,
+    attendance: 83,
+    Marks: 95,
+    lastUpdated: ISODate('2025-11-17T04:32:06.720Z'),      
+    activities: [ 'Drama', 'Yoga', 'Music', 'Dance' ]      
+  },
+  {
+    _id: ObjectId('69044de3987b4c6ed9f04c43'),
+    name: 'Neha',
+    course: 'CS',
+    isPassed: true,
+    attendance: 83,
+    Marks: 98,
+    lastUpdated: ISODate('2025-11-17T04:32:06.722Z'),      
+    activities: [ 'Drama', 'Yoga', 'Music', 'Dance' ]      
+  },
+  {
+    _id: ObjectId('6913048f1895b0a224cebea6'),
+    name: 'Hiba',
+    course: 'BCA',
+    isPassed: true,
+    attendance: 83,
+    Marks: 75,
+    lastUpdated: ISODate('2025-11-17T04:32:06.722Z'),      
+    activities: [ 'Drama', 'Arts', 'Music' ]
+  },
+  {
+    _id: ObjectId('691305261895b0a224cebea7'),
+    name: 'Marsi',
+    Marks: 75,
+    course: 'Science'
+  }
+]
+
+false:-
+Sample> db.users.find({Marks:{$exists:false}})
+[
+  {
+    _id: ObjectId('691305261895b0a224cebea7'),
+    name: 'Marsi',
+    course: 'Science'
+  }
+]
+Sample>
+
+2)$type;-
+it is used to check the data type of field.useful for conditional updates or filtering docmnts by type.
+syntax:-
+db.collctn.find({fieldName:{$type:"type"}})
