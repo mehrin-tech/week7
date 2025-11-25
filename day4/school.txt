@@ -1,0 +1,19 @@
+Tasks:-
+
+ Use the same school database.
+ Data Modeling:
+ Create two collections, students and courses.
+School> db.createCollection("courses")
+{ ok: 1 }
+School> show collections
+courses
+Students
+School>
+ Show one example of embedding (store course details inside a student).
+ Show one example of referencing (store only courseId in the student).
+ Indexing:
+ Create a single-field index on course.
+ Create a compound index on { course: 1, totalMarks: -1 }.
+ Create a text index on subjects and search for “Math”.
+ Performance:
+ Run one query with and without index; compare the result using explain(&quot;executionStats&quot;).

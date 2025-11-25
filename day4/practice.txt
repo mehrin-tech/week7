@@ -1,0 +1,259 @@
+embedding:-
+related data stored inside the same document.
+
+realworld example:-
+a report card of a student -their mark details inside the same docmnt.
+
+why use embedding:-
+its reads to faster
+*simple structre
+
+
+when to embeded:-
+*one-to-one-> one docmnt in collctn A relate to exactly one docmnt in collectionB.
+  _id: ObjectId('691c0acc81aebea5abcebea5'),
+    name: 'Aisha',
+    age: 20,
+    course: {
+      courseName: 'BSC CS',
+      duration: '3 years',
+      teacher: 'Mrs.Gopika'
+    }
+  }
+* and one to many relationshp.->one docmnts in collction A relates to many docmnts in collction B.
+(1 teacher teaches many students)
+db.teacher.insertOne({name:"Mrs.gopika",
+sub:"CS",
+students:[
+    {name:"hiba",age:22},
+    {name:"marsi",age:34},
+    {name:"shanu",age:34},
+    {name:"Mehrin",age:23}
+]})
+
+//bfre create index
+stage:"COLLSCAN"=>slow (no index)
+Sample> db.users.find({name:"Neha"}).explain()
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'Sample.users',
+    parsedQuery: { name: { '$eq': 'Neha' } },
+    indexFilterSet: false,
+    queryHash: 'F4DDDCDC',
+    planCacheShapeHash: 'F4DDDCDC',
+    planCacheKey: 'E45FBFA1',
+    optimizationTimeMillis: 5,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'COLLSCAN',
+      filter: { name: { '$eq': 'Neha' } },
+      direction: 'forward'
+    },
+    rejectedPlans: []
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 1,
+    executionTimeMillis: 13,
+    totalKeysExamined: 0,
+    totalDocsExamined: 5,
+    executionStages: {
+      isCached: false,
+      stage: 'COLLSCAN',
+      filter: { name: { '$eq': 'Neha' } },
+      nReturned: 1,
+      executionTimeMillisEstimate: 0,
+      works: 6,
+      advanced: 1,
+      needTime: 4,
+      needYield: 0,
+      saveState: 0,
+      restoreState: 0,
+      isEOF: 1,
+      direction: 'forward',
+      docsExamined: 5
+    }
+  },
+  queryShapeHash: '335DECD51669DBE1522885412C987F4595208A8F93922655AA432A92BC2A7EE3',
+  command: { find: 'users', filter: { name: 'Neha' }, '$db': 'Sample' },
+  serverInfo: {
+    host: 'LAPTOP-QFH9CESQ',
+    port: 27017,
+    version: '8.2.1',
+    gitVersion: '3312bdcf28aa65f5930005e21c2cb130f648b8c3' 
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,    
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,  
+    internalQueryMaxBlockingSortMemoryUsageBytes: 104857600,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',     
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1
+}
+//after create index
+stage:IXSCAN +>fast 
+Sample> db.users.createIndex({name:1})
+name_1
+Sample> db.users.find({name:"Neha"}).explain("executionStat
+s")
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'Sample.users',
+    parsedQuery: { name: { '$eq': 'Neha' } },
+    indexFilterSet: false,
+    queryHash: 'F4DDDCDC',
+    planCacheShapeHash: 'F4DDDCDC',
+    planCacheKey: '34C29116',
+    optimizationTimeMillis: 13,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'FETCH',
+      inputStage: {
+        stage: 'IXSCAN',
+        keyPattern: { name: 1 },
+        indexName: 'name_1',
+        isMultiKey: false,
+        multiKeyPaths: { name: [] },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: { name: [ '["Neha", "Neha"]' ] }      
+      }
+    },
+    rejectedPlans: []
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 1,
+    executionTimeMillis: 26,
+    totalKeysExamined: 1,
+    totalDocsExamined: 1,
+    executionStages: {
+      isCached: false,
+      stage: 'FETCH',
+      nReturned: 1,
+      executionTimeMillisEstimate: 11,
+      works: 2,
+      advanced: 1,
+      needTime: 0,
+      needYield: 0,
+      saveState: 1,
+      restoreState: 1,
+      isEOF: 1,
+      docsExamined: 1,
+      alreadyHasObj: 0,
+      inputStage: {
+        stage: 'IXSCAN',
+        nReturned: 1,
+        executionTimeMillisEstimate: 11,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 1,
+        restoreState: 1,
+        isEOF: 1,
+        keyPattern: { name: 1 },
+        indexName: 'name_1',
+        isMultiKey: false,
+        multiKeyPaths: { name: [] },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: { name: [ '["Neha", "Neha"]' ] },     
+        keysExamined: 1,
+        seeks: 1,
+        dupsTested: 0,
+        dupsDropped: 0
+      }
+    }
+  },
+  queryShapeHash: '335DECD51669DBE1522885412C987F4595208A8F93922655AA432A92BC2A7EE3',
+  command: { find: 'users', filter: { name: 'Neha' }, '$db': 'Sample' },
+  serverInfo: {
+    host: 'LAPTOP-QFH9CESQ',
+    port: 27017,
+    version: '8.2.1',
+    gitVersion: '3312bdcf28aa65f5930005e21c2cb130f648b8c3' 
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,    
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,  
+    internalQueryMaxBlockingSortMemoryUsageBytes: 104857600,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',     
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1
+}
+Sample>
+
+Tasks:-
+Use the same school database.
+ Data Modeling:
+ Create two collections, students and courses.
+ Show one example of embedding (store course details inside a student).
+
+Sample> db.users.insertOne({name:"Medha",age:20,totalMarks:95,sub:["Math","Phy"],course:{courseName:"BSC cs",duration:"3 years"}})
+{
+  acknowledged: true,
+  insertedId: ObjectId('69254bb7af851ece57cebea4')
+}
+Sample> db.users.find({name:"Medha"})
+[
+  {
+    _id: ObjectId('69254bb7af851ece57cebea4'),
+    name: 'Medha',
+    age: 20,
+    totalMarks: 95,
+    sub: [ 'Math', 'Phy' ],
+    course: { courseName: 'BSC cs', duration: '3 years' }
+  }
+]
+Sample>
+ Show one example of referencing (store only courseId in the student).
+ Indexing:
+Sample> db.users.find({name:"Mehr"})
+[
+  {
+    _id: ObjectId('69254d2baf851ece57cebea5'),
+    name: 'Mehr',
+    age: 22,
+    totalMarks: 88,
+    sub: [ 'Math', 'CS' ],
+    courseId: 101
+  }
+]
+Sample> db.courses.findOne()
+{ _id: 101, courseName: 'BSC CS', duration: '3 years' }
+Sample> 
+
+ Create a single-field index on course.
+ Create a compound index on { course: 1, totalMarks: -1 }.
+ Create a text index on subjects and search for “Math”.
+ Performance:
+ Run one query with and without index; compare the result using explain(&quot;executionStats&quot;).

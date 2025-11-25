@@ -1,0 +1,460 @@
+============types of indexes===========
+1)single field index:- one field search fast
+eg:-//create index on name:-
+ db.users.createIndex({name:1})  //name_1
+
+ //find stds by name:-
+  db.users.find({name:"Neha"})
+
+
+  2)compound index:- search multiple fields togethr fast.
+
+  //index on city +course
+  Sample> db.users.createIndex({city:1,course:1})
+city_1_course_1
+
+Sample> db.users.find({city:"Pattambi",course:"CS"})
+[
+  {
+    _id: ObjectId('69044de3987b4c6ed9f04c43'),
+    name: 'Neha',
+    course: 'CS',
+    isPassed: true,
+    attendance: 83,
+    Marks: 95,
+    lastUpdated: ISODate('2025-11-17T04:32:06.722Z'),
+    activities: [ 'classical', 'cinematic', 'Music' ],
+    city: 'Pattambi',
+    rollNo: 1
+  }
+]
+
+3)Multikey index:- arrays fast search.
+if a students hav emultiple skills->array elmnts individually indexed.
+eg:-
+
+Sample> db.students.insertMany([
+...   { name: "Aisha", skills: ["HTML", "CSS", "JS"] },
+...   { name: "Amna", skills: ["Python", "MongoDB"] },
+...   { name: "Mia", skills: ["JS", "React"] }
+... ]);
+... 
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('69240a8775a804c9fdcebea4'),
+    '1': ObjectId('69240a8775a804c9fdcebea5'),
+    '2': ObjectId('69240a8775a804c9fdcebea6')
+  }
+}
+Sample> db.students.createIndex({skills:1})
+skills_1
+Sample> db.students.find({skills:"JS"})
+[
+  {
+    _id: ObjectId('69240a8775a804c9fdcebea4'),
+    name: 'Aisha',
+    skills: [ 'HTML', 'CSS', 'JS' ]
+  },
+  {
+    _id: ObjectId('69240a8775a804c9fdcebea6'),
+    name: 'Mia',
+    skills: [ 'JS', 'React' ]
+  }
+]
+Sample>
+//MongoDB uses the multikey index to quickly find all students having "JS" in their skills array.
+
+4)Text index:-
+full -text search like  google.
+text index namukk string or words search cheyyan kazhiyum.
+exact match cheyyunna words ne  kittan + sign ->mongoDb text search il mandatory word yennu kaanikunnu. oru ex:-
+         Sample> db.students.find({$text:{$search:"+Math"}})
+        { name: 'Aisha',
+    studentId: 104,
+    description: 'Loves Science and Math'
+  },
+  {
+    _id: ObjectId('69241b1f75a804c9fdcebeaa'),
+    name: 'Neha',
+    studentId: 101,
+    description: 'Good at Math and Science'
+  }
+
+  explanion:-
+  $text=>text index vech search cheyyan
+  $search=>search cheyyenda text ivide "Math".
+  +=>mongoDb text search il mandatory word yennu kaanikunnu.
+
+another example 1 include and 1 exclude:-
+Sample> db.students.find({$text:{$search:"Science -Loves"}})
+[
+  {
+    _id: ObjectId('69241b1f75a804c9fdcebeaa'),
+    name: 'Neha',
+    studentId: 101,
+    description: 'Good at Math and Science'
+  }
+]
+Sample>
+real world example :-
+
+pdf.if when i search a word in pdf ,give for exact matched words.
+  ====uses of text index====
+
+ * fast search on large collections.
+ * multi-field search like description anem,category.
+  *full text search  words or phrases inside string fields of docmnts.
+
+  advanges:-
+  1)speed:-
+  Huge collectionsil even multiple word searches fast.
+
+Example: Flipkart search results are instant because of text indexes.
+
+2)multiple fields support:-
+Search multiple fields at once.
+
+Example: name, description, category together.
+
+3)advanced search features:-
+*exact words(+words)
+*exclud (-words)
+
+=>disadvantages
+*index size:-Large text indexes consume more disk space.
+
+Especially if multiple fields are indexed.
+*stop words & lang limitations:-
+some common words like('the,is,at ,and) are ignored by default.
+*No partial string matching:-cannot search substrings efficiently ("iph" wona't match "iPhone").
+     regex search needed for that.partial word search not easy.update cost.
+
+
+6)==========TTL(Time-To-Live) index======
+*oru docmnt how much time databasil venam yennu mongoDB parayanulla index aanu TTL index.
+time expired aakumbol mongoDb auto-deleteed.
+its like a cleaning job->old,unwanted data mongoDb automatically removed.
+
+use cases:-
+1)expired data:-
+OTP,Login session,passwrd rst,tempory tokens,cart expiry,logs.
+2)save database space:-
+old data auto-delete=>databased load low=>fast.
+
+=>how to create TTL index:-
+syntax:-
+db.collction.createIndex({fieldName:1},{expireafterseconds:300})
+
+=>important rules for TTL:-
+*TTL works only on date fields
+* TTL doesnot delete immedetly
+*it can create only one TTL index per field.
+*TTl acnnt be created on _id.
+
+=>advantges:-
+*Mongo it can clean automatically.
+*improvd performace
+*decrease maintenence
+
+=>disadvntgs:-
+if wrong the time calcultions ,loss docmnts .
+*TTL removes docmnts silently
+
+7)partial and sparse indexes:-
+sparse:-if we create index,that only the docmnts that have  the indexd field maathramaanu indexing cheyyunnath.
+
+
+
+=========capped collections==========
+capped  collection have a fixed -size collection in mongoDB.
+*it reaches its max size,old docmnts are automatically removed and to make space for new docmnts.
+*it works like a circlr buffer :newst data comes in,oldest data goes out.
+
+=>key Properties:-
+*fixed size-dfne a max size in bytes.
+*suto-overwrite-oldst dcmnts rmved automatclly.
+*insertion order-dcmnts are stored in natrl insertion order
+* high performance-its very fast to writes,good for logs and real-time date.
+
+=>how to create a capped collction:-
+db.createCollection("logs",{capped:true,size:1000,max:5})
+
+capped: true → makes it a capped collection.
+
+size → maximum size in bytes.
+
+max → optional, maximum number of documents.
+
+eg:-
+Sample> db.createCollection("logs",{capped:true,size:1000,max:5})
+{ ok: 1 }
+Sample> db.logs.insertMany([
+...   { message: "Log 1", time: new Date() },
+...   { message: "Log 2", time: new Date() },
+...   { message: "Log 3", time: new Date() },
+...   { message: "Log 4", time: new Date() },
+...   { message: "Log 5", time: new Date() },
+...   { message: "Log 6", time: new Date() } // this will remove Log 1 automatically
+... ])
+...
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('692538e675a804c9fdcebeb8'),
+    '1': ObjectId('692538e675a804c9fdcebeb9'),
+    '2': ObjectId('692538e675a804c9fdcebeba'),
+    '3': ObjectId('692538e675a804c9fdcebebb'),
+    '4': ObjectId('692538e675a804c9fdcebebc'),
+    '5': ObjectId('692538e675a804c9fdcebebd')
+  }
+}
+Sample> db.logs.find().pretty()
+[
+  {
+    _id: ObjectId('692538e675a804c9fdcebeb9'),
+    message: 'Log 2',
+    time: ISODate('2025-11-25T05:04:38.844Z')
+  },
+  {
+    _id: ObjectId('692538e675a804c9fdcebeba'),
+    message: 'Log 3',
+    time: ISODate('2025-11-25T05:04:38.844Z')
+  },
+  {
+    _id: ObjectId('692538e675a804c9fdcebebb'),
+    message: 'Log 4',
+    time: ISODate('2025-11-25T05:04:38.844Z')
+  },
+  {
+    _id: ObjectId('692538e675a804c9fdcebebc'),
+    message: 'Log 5',
+    time: ISODate('2025-11-25T05:04:38.844Z')
+  },
+  {
+    _id: ObjectId('692538e675a804c9fdcebebd'),
+    message: 'Log 6',
+    time: ISODate('2025-11-25T05:04:38.844Z')
+  }
+]
+Sample>
+log1 automaticlaly removed ,becoz limit is over.add new docmnt.
+
+=>advantages:-
+*automatic cleanup->no need to manually delete old docmnts
+*high performance writes fast.
+* guarantees insertion order.
+
+=>disadvantages:-
+fixed size- old data will be lost.
+*cannot delete specific docmnts
+*cannot shrink after creaetion.
+
+
+==============performance and query Analysis=============
+=>query execution in mongoDB:-
+mongoDB has to figure out how to fetch the data.there are main 2ways:-
+1)COLLSCAN (collction scan):-
+mongoDB looks at every docmnt in the collctn to find matches.
+
+eg:-imagine you have a stack of 50000 studnt fils ,and you check each file one by one to find Neha.
+
+pros:- works on any collction ,but ni  index needed
+cons:- very slow for large collctions.
+Sample> db.students.find({name:"Hiba"}).explain('executionStats')
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'Sample.students',
+    parsedQuery: { name: { '$eq': 'Hiba' } },
+    indexFilterSet: false,
+    queryHash: 'F4DDDCDC',
+    planCacheShapeHash: 'F4DDDCDC',
+    planCacheKey: 'E45FBFA1',
+    optimizationTimeMillis: 5,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'COLLSCAN',
+      filter: { name: { '$eq': 'Hiba' } },
+      direction: 'forward'
+    },
+    rejectedPlans: []
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 6,
+    executionTimeMillis: 9,
+    totalKeysExamined: 0,
+    totalDocsExamined: 22,
+    executionStages: {
+      isCached: false,
+      stage: 'COLLSCAN',
+      filter: { name: { '$eq': 'Hiba' } },
+      nReturned: 6,
+      executionTimeMillisEstimate: 0,
+      works: 23,
+      advanced: 6,
+      needTime: 16,
+      needYield: 0,
+      saveState: 0,
+      restoreState: 0,
+      isEOF: 1,
+      direction: 'forward',
+      docsExamined: 22
+    }
+  },
+  queryShapeHash: 'FFD3AC7B82387E5C48C8917FAC9AB34D9430F81EC8C384C44EEA24CAC50CAA74',
+  command: { find: 'students', filter: { name: 'Hiba' }, '$db': 'Sample' }, 
+  serverInfo: {
+    host: 'LAPTOP-QFH9CESQ',
+    port: 27017,
+    version: '8.2.1',
+    gitVersion: '3312bdcf28aa65f5930005e21c2cb130f648b8c3'
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,
+    internalQueryMaxBlockingSortMemoryUsageBytes: 104857600,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1
+}
+Sample>
+
+
+2)IXSCAN(index scan):-
+
+mongoDB uses an index to directly jump to matching docmnts.
+eg:-
+checking 50+ thousands  of files one by one,you use a studnt directry sortd by name->directly jump to "that student.
+
+*pros:-much fatser ,especially for large collctions.
+*cons:-requires an index on the field you query.
+eg:-
+db.students.createIndex({name: 1}) // create index on name
+db.students.find({name: "Neha"}).explain("executionStats")
+Sample> db.students.find({age:34}).explain("executionStats")
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'Sample.students',
+    parsedQuery: { age: { '$eq': 34 } },
+    indexFilterSet: false,
+    queryHash: '0637AF1A',
+    planCacheShapeHash: '0637AF1A',
+    planCacheKey: 'D54E87D9',
+    optimizationTimeMillis: 0,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'FETCH',
+      inputStage: {
+        stage: 'IXSCAN',
+        keyPattern: { age: 1 },
+        indexName: 'age_1',
+        isMultiKey: false,
+        multiKeyPaths: { age: [] },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: { age: [ '[34, 34]' ] }
+      }
+    },
+    rejectedPlans: []
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 1,
+    executionTimeMillis: 10,
+    totalKeysExamined: 1,
+    totalDocsExamined: 1,
+    executionStages: {
+      isCached: false,
+      stage: 'FETCH',
+      nReturned: 1,
+      executionTimeMillisEstimate: 0,
+      works: 2,
+      advanced: 1,
+      needTime: 0,
+      needYield: 0,
+      saveState: 0,
+      restoreState: 0,
+      isEOF: 1,
+      docsExamined: 1,
+      alreadyHasObj: 0,
+      inputStage: {
+        stage: 'IXSCAN',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        keyPattern: { age: 1 },
+        indexName: 'age_1',
+        isMultiKey: false,
+        multiKeyPaths: { age: [] },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: { age: [ '[34, 34]' ] },
+        keysExamined: 1,
+        seeks: 1,
+        dupsTested: 0,
+        dupsDropped: 0
+      }
+    }
+  },
+  queryShapeHash: '85C65595067747E6AC406F1C6B904A82041F186AF6BECB052C251A9DE30F1C4A',
+  command: { find: 'students', filter: { age: 34 }, '$db': 'Sample' },      
+  serverInfo: {
+    host: 'LAPTOP-QFH9CESQ',
+    port: 27017,
+    version: '8.2.1',
+    gitVersion: '3312bdcf28aa65f5930005e21c2cb130f648b8c3'
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,
+    internalQueryMaxBlockingSortMemoryUsageBytes: 104857600,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1
+}
+
+=>execution flow====
+1)You run db.students.find({name:"Neha"}).
+
+2)MongoDB checks if there is an index on name.
+                |
+
+If yes → IXSCAN → directly fetch matching docs.
+If no → COLLSCAN → scan all documents one by one.
+
+4)MongoDB returns the documents.
