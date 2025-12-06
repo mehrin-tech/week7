@@ -10,10 +10,305 @@ courses
 Students
 School>
  Show one example of embedding (store course details inside a student).
+School> db.Students.find({name:"Shyma"})
+[
+  {
+    _id: ObjectId('6933b1054105b891c9cebea4'),
+    name: 'Shyma',
+    age: 24,
+    course: {
+      name: 'Mern stack Development',
+      duration: '1 year',
+      institution: 'EonixSolutions'
+      
+    }
+  }
+]
+
  Show one example of referencing (store only courseId in the student).
+School> db.Students.insertOne({name:"Bob",age:23})
+{
+  acknowledged: true,
+  insertedId: ObjectId('6933b1b74105b891c9cebea5')
+}
+
+course:-
+School> db.courses.insertOne({id:101,name:"Python developement",duration:"1 year",institution:"EonixSolutions"})
+{
+  acknowledged: true,
+  insertedId: ObjectId('6933b2784105b891c9cebea6')
+}
+
+School> db.Students.updateOne({_id:ObjectId('6933b1b74105b891c9cebea5')},{$s
+$set:{courseId:101}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+School> db.Students.find({name:"Bob"})
+[
+  {
+    _id: ObjectId('6933b1b74105b891c9cebea5'),
+    name: 'Bob',
+    age: 23,
+    courseId: 101
+  }
+]
+School>
  Indexing:
  Create a single-field index on course.
+School> db.Students.createIndex({courseId:1})
+courseId_1
+School> db.Students.getIndexes()
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { courseId: 1 }, name: 'courseId_1' }
+]
  Create a compound index on { course: 1, totalMarks: -1 }.
+School> db.Students.createIndex({course:1,totalMarks:-1})
+course_1_totalMarks_-1
+School>
  Create a text index on subjects and search for “Math”.
+School> db.Students.createIndex({subjects:"text"})
+subjects_text
+School> db.Students.find({$text:{$search:"Maths"}})
+[
+  {
+    _id: ObjectId('6905a6dd987b4c6ed9f04c44'),
+    name: 'Neha',
+    activities: [ 'Sports', 'Guitarist' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 100,
+    course: 'Science',
+    dob: ISODate('2003-09-20T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    totalMarks: 85,
+    lastUpdated: ISODate('2025-11-13T05:46:56.281Z')
+  },
+  {
+    _id: ObjectId('68fb217ba685db7566cebea8'),
+    name: 'Zeba',
+    course: 'Science',
+    dob: ISODate('2005-09-04T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry' ],
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 95,
+    totalMarks: 95,
+    activities: [ 'Sports', 'Arts', 'Dance' ],
+    lastUpdated: ISODate('2025-11-13T05:29:30.771Z')
+  },
+  {
+    _id: ObjectId('68fb1feaa685db7566cebea5'),
+    name: 'Amna',
+    course: 'Science',
+    dob: ISODate('2003-08-23T00:00:00.000Z'),
+    isPassed: true,
+    joiningdate: ISODate('2025-07-10T00:00:00.000Z'),
+    subjects: [ 'Maths', 'Physics', 'Chemistry', 'Biology' ],
+    address: { city: 'Thrissur', pin: 670890, country: 'India' },
+    attendance: 95,
+    totalMarks: 90,
+    activities: [ 'Sports', 'Arts', 'Dance' ],
+    lastUpdated: ISODate('2025-11-13T05:29:30.770Z')
+  },
+  {
+    _id: ObjectId('68fb05dda685db7566cebea4'),
+    name: 'Aisha',
+    course: 'Science',
+    dob: ISODate('2004-06-10T00:00:00.000Z'),
+    isPassed: true,
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),
+    subjects: [ 'Physics', 'Chemistry', 'Computer Science', 'Maths' ],      
+    address: { city: 'Palakkad', pin: 679305, country: 'India' },
+    attendance: 50,
+    totalMarks: 105,
+    activities: [ 'Sports', 'Arts', 'Dance' ],
+    lastUpdated: ISODate('2025-11-13T05:40:42.881Z')
+  }
+]
+School>
  Performance:
  Run one query with and without index; compare the result using explain(&quot;executionStats&quot;).
+//without index
+School> db.Students.find({attendance:50}).explain("executionStats")
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'School.Students',
+    parsedQuery: { attendance: { '$eq': 50 } },
+    indexFilterSet: false,
+    queryHash: 'D1E374FA',
+    planCacheShapeHash: 'D1E374FA',
+    planCacheKey: 'E9464654',
+    optimizationTimeMillis: 0,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'COLLSCAN',<==================
+      filter: { attendance: { '$eq': 50 } },
+      direction: 'forward'
+    },
+    rejectedPlans: []
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 1,
+    executionTimeMillis: 6,
+    totalKeysExamined: 0,
+    totalDocsExamined: 8,
+    executionStages: {
+      isCached: false,
+      stage: 'COLLSCAN',
+      filter: { attendance: { '$eq': 50 } },
+      nReturned: 1,
+      executionTimeMillisEstimate: 0,
+      works: 9,
+      advanced: 1,
+      needTime: 7,
+      needYield: 0,
+      saveState: 0,
+      restoreState: 0,
+      isEOF: 1,
+      direction: 'forward',
+      docsExamined: 8  <===================
+    }
+  },
+  queryShapeHash: '863BFC48BF7EAD013EB0C9706B1911D73635FE09CBFFA2B044696313D021975E',
+  command: { find: 'Students', filter: { attendance: 50 }, '$db': 'School' },
+  serverInfo: {
+    host: 'LAPTOP-QFH9CESQ',
+    port: 27017,
+    version: '8.2.1',
+    gitVersion: '3312bdcf28aa65f5930005e21c2cb130f648b8c3'
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,
+    internalQueryMaxBlockingSortMemoryUsageBytes: 104857600,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1
+}
+School>
+
+//with index
+School> db.Students.find({name:"Neha"}).explain("executionStats")
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'School.Students',
+    parsedQuery: { name: { '$eq': 'Neha' } },
+    indexFilterSet: false,
+    queryHash: 'F4DDDCDC',
+    planCacheShapeHash: 'F4DDDCDC',
+    planCacheKey: '34C29116',
+    optimizationTimeMillis: 8,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'FETCH',
+      inputStage: {
+        stage: 'IXSCAN',<=============================
+        keyPattern: { name: 1 },
+        indexName: 'name_1',
+        isMultiKey: false,
+        multiKeyPaths: { name: [] },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: { name: [ '["Neha", "Neha"]' ] }
+      }
+    },
+    rejectedPlans: []
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 1,
+    executionTimeMillis: 11,
+    totalKeysExamined: 1,
+    totalDocsExamined: 1,
+    executionStages: {
+      isCached: false,
+      stage: 'FETCH',
+      nReturned: 1,
+      executionTimeMillisEstimate: 0,
+      works: 2,
+      advanced: 1,
+      needTime: 0,
+      needYield: 0,
+      saveState: 0,
+      restoreState: 0,
+      isEOF: 1,
+      docsExamined: 1,
+      alreadyHasObj: 0,
+      inputStage: {
+        stage: 'IXSCAN',<============================
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        keyPattern: { name: 1 },
+        indexName: 'name_1',
+        isMultiKey: false,
+        multiKeyPaths: { name: [] },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: { name: [ '["Neha", "Neha"]' ] },
+        keysExamined: 1,
+        seeks: 1,
+        dupsTested: 0,
+        dupsDropped: 0
+      }
+    }
+  },
+  queryShapeHash: '2C121A7F0481D7F9AD2B46476C2FB4659008B0A8A3905C1E7E4BE91514402236',
+  command: { find: 'Students', filter: { name: 'Neha' }, '$db': 'School' }, 
+  serverInfo: {
+    host: 'LAPTOP-QFH9CESQ',
+    port: 27017,
+    version: '8.2.1',
+    gitVersion: '3312bdcf28aa65f5930005e21c2cb130f648b8c3'
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,
+    internalQueryMaxBlockingSortMemoryUsageBytes: 104857600,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1
+}

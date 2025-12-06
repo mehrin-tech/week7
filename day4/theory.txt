@@ -1,3 +1,80 @@
+====data modeling====
+it means deciding how your data stored ,structured  related inside mongoDb.so it  used for  fast ,efficient and easy to maintain.
+
+how data stored in computer?
+there are 2 main types of storage in computer:-
+1)RAM-random access memory.
+its a temporary memory.when it stored data at while running program .after that if you close or shutdown cmputer that datas are gones in memory.
+but its useful for fast performance.
+2)Disk->permamant memry storage
+if you stred data in permantly stays here,when you shutdown cmputer,but our data stays here.
+buts its slower than RAM.
+
+In mongoDb uses these 2 storages.datas are stored in Disk and RAM is used for fast perfomance in queries.
+
+In disk,the storage engine of  mongiDB is WEIred tiger.that engine stores data in disk like each docmnts stored in diskpages.
+when the docmnt grows ,took the data and placed to another space,so its not good performnce .
+so tḥe we use data modeling well deciding  to how data structred stored in mongoDb.1)embedding and reffencing
+embedding :-related data stores inside the same docmnt
+refferencing:-related data stores another docmnt with id linking to the docmmnts.
+
+
+====relation types in mongoDB=======
+1)one-to-one:-one child one parent and 1 parent has 1 child
+user<-> profile
+if data large-referencing  parent id<->child id
+if data small -embedding   
+
+2)one-to-many:- one parent has many childs
+if data small-embedding
+but if data grows in large-refferencing=>parent id->c1,c2,c3=>parent id shares to childs
+eg:-post->comments
+3)many-to-many:-many parent has many childs
+always referencing.                 =>studnts            courses
+eg:-students->courses                  s1,s2,s3...         c1,c2,c3...   =>in this case parent id doesnt shred child and child id doesnt share parent .only possible for create a new collection for linking both
+                                         that is studnt-course.then shared the id of linking collection.
+
+
+
+====Fragmenttion inside wierd tiger=====
+diskil ninnu oru docmnt grow cheyyumbol athine relocate cheyyum wierd tiger.appo avide verunna empty gap verum .old space ne athine Os  onnum cheyyilla.aa gap avidethanne undaakum.but athinte same limitil vannal reuse cheyyum allatha paksha aa gap avide undaakm.aa empty gaps undakunnathine aanu fragmentation yennu parayunnath.
+ini nammla domnt delete cheythalum ithuthannen avide undakunnath.aa space waste aavum ,data read cheymbol slow,diskil ninnu ramil vekkum 
+                                 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ============types of indexes===========
 1)single field index:- one field search fast
 eg:-//create index on name:-
