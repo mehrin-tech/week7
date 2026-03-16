@@ -1,0 +1,70 @@
+The students Sample Collection
+We will use this data to find the Top 1 Major based on the average GPA of students who enrolled in 2022.
+db.students.insertMany([
+  {
+    "student_id": "ST1001",
+    "name": "Alice Johnson",
+    "major": "Computer Science",
+    "enrollment_year": 2022,
+    "gpa": 3.85
+  },
+  {
+    "student_id": "ST1002",
+    "name": "Bob Williams",
+    "major": "Physics",
+    "enrollment_year": 2023,
+    "gpa": 3.10
+  },
+  {
+    "student_id": "ST1003",
+    "name": "Charlie Davis",
+    "major": "Computer Science",
+    "enrollment_year": 2022,
+    "gpa": 3.99
+  },
+  {
+    "student_id": "ST1004",
+    "name": "David Smith",
+    "major": "Physics",
+    "enrollment_year": 2022,
+    "gpa": 3.40
+  },
+  {
+    "student_id": "ST1005",
+    "name": "Eva Brown",
+    "major": "Mathematics",
+    "enrollment_year": 2023,
+    "gpa": 3.65
+  }
+]);
+
+After $group: Calculates the average GPA per major:
+
+simple> db.students.aggregate([{$match:{enrollment_year:2022}},{$group:{_id:
+"$major",averageGpa:{$avg:"$gpa"}}}])
+[
+  { _id: 'Physics', averageGpa: 3.4 },
+  { _id: 'Computer Science', averageGpa: 3.92 }
+]
+
+After $project: The output documents are reshaped to:
+
+simple> db.students.aggregate([{$match:{enrollment_year:2022}},{$group:{_id:
+
+... "$major",averageGpa:{$avg:"$gpa"}}},{$project:{_id:0,Major:"$_id",AvgGPA
+:"$averageGpa"}}])
+[
+  { Major: 'Computer Science', AvgGPA: 3.92 },
+  { Major: 'Physics', AvgGPA: 3.4 }
+]
+simple>
+
+After $sort: The results are ordered by AvgGPA descending:
+After $skip: The first document (Computer Science) is skipped.
+
+After $limit: Only the next 1 document is returned.
+
+simple> db.students.aggregate([{$match:{enrollment_year:2022}},{$group:{_id:"$major",averageGpa:{$avg:"$gpa"}}},{$project:{_id:0,Major:"$_id",AvgGPA:"$a
+verageGpa"}},{$sort:{AvgGPA:-1}},{$skip:1},{$limit:1}])
+[ { Major: 'Physics', AvgGPA: 3.4 } ]
+simple>

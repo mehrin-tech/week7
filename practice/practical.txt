@@ -1,0 +1,178 @@
+1) Show students from batch C2C-02
+practical> db.students.find({batch:"C2C-02"})
+[
+  {
+    _id: ObjectId('69b511e519b04f347ecebea6'),
+    studentId: 'S003',
+    name: 'Meera',
+    city: 'Kozhikode',
+    batch: 'C2C-02'
+  },
+  {
+    _id: ObjectId('69b511e519b04f347ecebea7'),
+    studentId: 'S004',
+    name: 'Nihal',
+    city: 'Thrissur',
+    batch: 'C2C-02'
+  }
+]
+practical>
+
+2) Find students whose name starts with “M” (case-insensitive)
+practical> db.students.find({name:{$regex:"^M"}})
+[
+  {
+    _id: ObjectId('69b511e519b04f347ecebea6'),
+    studentId: 'S003',
+    name: 'Meera',
+    city: 'Kozhikode',
+    batch: 'C2C-02'
+  }
+]
+practical>
+
+3) Change status to "pass" where score becomes >= 50 (and "fail" otherwise)
+
+practical> db.marks.updateMany({},[{$set:{status:{$cond:[{$gte:["$score",50]},"Pass","fail"]}}}])
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 10,
+  modifiedCount: 8,
+  upsertedCount: 0
+}
+practical> db.marks.find()
+[
+  {
+    _id: ObjectId('69b5120e19b04f347ecebea9'),
+    studentId: 'S001',
+    subject: 'JavaScript',
+    score: 78,
+    status: 'Pass'
+  },
+  {
+    _id: ObjectId('69b5120e19b04f347ecebeaa'),
+    studentId: 'S001',
+    subject: 'MongoDB',
+    score: 84,
+    status: 'Pass'
+  },
+  {
+    _id: ObjectId('69b5120e19b04f347ecebeab'),
+    studentId: 'S002',
+    subject: 'JavaScript',
+    score: 52,
+    status: 'Pass'
+  },
+  {
+    _id: ObjectId('69b5120e19b04f347ecebeac'),
+    studentId: 'S002',
+    subject: 'MongoDB',
+    score: 39,
+    status: 'fail'
+  },
+  {
+    _id: ObjectId('69b5120e19b04f347ecebead'),
+    studentId: 'S003',
+    subject: 'JavaScript',
+    score: 88,
+    status: 'Pass'
+  },
+  {
+    _id: ObjectId('69b5120e19b04f347ecebeae'),
+    studentId: 'S003',
+    subject: 'MongoDB',
+    score: 73,
+    status: 'Pass'
+  },
+  {
+    _id: ObjectId('69b5120e19b04f347ecebeaf'),
+    studentId: 'S004',
+    subject: 'JavaScript',
+    score: 45,
+    status: 'fail'
+  },
+  {
+    _id: ObjectId('69b5120e19b04f347ecebeb0'),
+    studentId: 'S004',
+    subject: 'MongoDB',
+    score: 60,
+    status: 'Pass'
+  },
+  {
+    _id: ObjectId('69b5120e19b04f347ecebeb1'),
+    studentId: 'S005',
+    subject: 'JavaScript',
+    score: 91,
+    status: 'Pass'
+  },
+  {
+    _id: ObjectId('69b5120e19b04f347ecebeb2'),
+    studentId: 'S005',
+    subject: 'MongoDB',
+    score: 95,
+    status: 'Pass'
+  }
+]
+practical>
+
+
+4) Subject wise average score
+ db.marks.aggregate([{$group:{_id:"$subject",avgScore:{$avg:"$score"}}}])
+
+ [
+  { _id: 'MongoDB', avgScore: 70.2 },
+  { _id: 'JavaScript', avgScore: 70.8 }
+]
+
+
+5) Topper in MongoDB (highest score)
+db.marks.find({subject:"MongoDB}).sort({score:-1}).limit(1)
+
+[
+  {
+    _id: ObjectId('69b5120e19b04f347ecebeb2'),
+    studentId: 'S005',
+    subject: 'MongoDB',
+    score: 95,
+    status: 'Pass'
+  }
+]
+
+Use the students and marks collections to find the total score for each student by joining the two collections. Display the studentId, name, and totalScore
+
+db.students.aggregate([{$lookup:{from:"marks",localField:"studentId",foreignField:"studentId",as:"marks"}},{$unwind:"$marks"},{$project:{studentId:1,name:1,totalScore:{$sum:"$marks.score"}}}])
+
+[
+  {
+    _id: ObjectId('69b511e519b04f347ecebea4'),
+    studentId: 'S001',
+    name: 'Asha',
+    totalScore: 162
+  },
+  {
+    _id: ObjectId('69b511e519b04f347ecebea5'),
+    studentId: 'S002',
+    name: 'Rahul',
+    totalScore: 91
+  },
+  {
+    _id: ObjectId('69b511e519b04f347ecebea6'),
+    studentId: 'S003',
+    name: 'Meera',
+    totalScore: 161
+  },
+  {
+    _id: ObjectId('69b511e519b04f347ecebea7'),
+    studentId: 'S004',
+    name: 'Nihal',
+    totalScore: 105
+  },
+  {
+    _id: ObjectId('69b511e519b04f347ecebea8'),
+    studentId: 'S005',
+    name: 'Zara',
+    totalScore: 186
+  }
+]
+practical>

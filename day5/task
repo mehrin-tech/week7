@@ -1,0 +1,307 @@
+Tasks:
+ Create a new collection sales in the same school database.
+
+School> db.createCollection("sales")
+{ ok: 1 }
+
+
+ Insert sample data with fields: item, category, quantity, price, date.
+School> db.sales.find().pretty()
+[
+  {
+    _id: ObjectId('69a93aae92e34a8e98cebea4'),
+    item: 'notebook',
+    category: 'stationery',
+    quantity: 15,
+    price: 55,
+    date: ISODate('2026-03-01T00:00:00.000Z')
+  },
+  {
+    _id: ObjectId('69a93aae92e34a8e98cebea5'),
+    item: 'pen',
+    category: 'stationery',
+    quantity: 25,
+    price: 50,
+    date: ISODate('2026-03-02T00:00:00.000Z')
+  },
+  {
+    _id: ObjectId('69a93aae92e34a8e98cebea6'),
+    item: 'pencil',
+    category: 'stationery',
+    quantity: 30,
+    price: 60,
+    date: ISODate('2026-02-15T00:00:00.000Z')
+  },
+  {
+    _id: ObjectId('69a93aae92e34a8e98cebea7'),
+    item: 'school bag',
+    category: 'accessories',
+    quantity: 10,
+    price: 1000,
+    date: ISODate('2026-02-25T00:00:00.000Z')
+  },
+  {
+    _id: ObjectId('69a93aae92e34a8e98cebea8'),
+    item: 'water bottle',
+    category: 'accessories',
+    quantity: 5,
+    price: 200,
+    date: ISODate('2026-01-10T00:00:00.000Z')
+  }
+]
+School>
+ Use $match to show sales with quantity above 10.
+School> db.sales.aggregate([{$match:{quantity:{$gt:10}}}])
+[
+  {
+    _id: ObjectId('69a93aae92e34a8e98cebea4'),
+    item: 'notebook',
+    category: 'stationery',
+    quantity: 15,
+    price: 55,
+    date: ISODate('2026-03-01T00:00:00.000Z')
+  },
+  {
+    _id: ObjectId('69a93aae92e34a8e98cebea5'),
+    item: 'pen',
+    category: 'stationery',
+    quantity: 25,
+    price: 50,
+    date: ISODate('2026-03-02T00:00:00.000Z')
+  },
+  {
+    _id: ObjectId('69a93aae92e34a8e98cebea6'),
+    item: 'pencil',
+    category: 'stationery',
+    quantity: 30,
+    price: 60,
+    date: ISODate('2026-02-15T00:00:00.000Z')
+  }
+]
+School>
+ Use $addFields to add a new field revenue = quantity * price.
+
+School> db.sales.aggregate([{$addFields:{revenue:{$multiply:["$quantity","$p
+rice"]}}}])
+[
+  {
+    _id: ObjectId('69a93aae92e34a8e98cebea4'),
+    item: 'notebook',
+    category: 'stationery',
+    quantity: 15,
+    price: 55,
+    date: ISODate('2026-03-01T00:00:00.000Z'),
+    revenue: 825
+  },
+  {
+    _id: ObjectId('69a93aae92e34a8e98cebea5'),
+    item: 'pen',
+    category: 'stationery',
+    quantity: 25,
+    price: 50,
+    date: ISODate('2026-03-02T00:00:00.000Z'),
+    revenue: 1250
+  },
+  {
+    _id: ObjectId('69a93aae92e34a8e98cebea6'),
+    item: 'pencil',
+    category: 'stationery',
+    quantity: 30,
+    price: 60,
+    date: ISODate('2026-02-15T00:00:00.000Z'),
+    revenue: 1800
+  },
+  {
+    _id: ObjectId('69a93aae92e34a8e98cebea7'),
+    item: 'school bag',
+    category: 'accessories',
+    quantity: 10,
+    price: 1000,
+    date: ISODate('2026-02-25T00:00:00.000Z'),
+    revenue: 10000
+  },
+  {
+    _id: ObjectId('69a93aae92e34a8e98cebea8'),
+    item: 'water bottle',
+    category: 'accessories',
+    quantity: 5,
+    price: 200,
+    date: ISODate('2026-01-10T00:00:00.000Z'),
+    revenue: 1000
+  }
+]
+School>
+ Use $group to find total and average revenue for each category.
+School> db.sales.aggregate([{$group:{_id:"$category",total:{$sum:"$revenue"}
+,average:{$avg:"$revenue"}}}])
+[
+  { _id: 'stationery', total: 3875, average: 1291.6666666666667 },
+  { _id: 'accessories', total: 11000, average: 5500 }
+]
+School>
+ Sort results by total revenue (highest first).
+School> db.sales.aggregate([{$group:{_id:"$category",total:{$sum:"$revenue"} ,average:{$avg:"$revenue"}}},{$sort:{total:-1}}])
+[
+  { _id: 'accessories', total: 11000, average: 5500 },
+  { _id: 'stationery', total: 3875, average: 1291.6666666666667 }
+]
+School>
+ Show top 3 categories using $limit.
+School> db.sales.aggregate([{$group:{_id:"$category",total:{$sum:"$revenue"}}},{$sort:{total:-1}},{$limit:3}])
+[
+  { _id: 'accessories', total: 11000 },
+  { _id: 'clothing', total: 4900 },
+  { _id: 'electronics', total: 4800 }
+]
+School>
+ Use $bucket to group items by price range.
+School> db.sales.aggregate([{$bucket:{groupBy:"$price",boundaries:[0,100,500,1000],default:"Other",output:{count:{$sum:1},totalQuantity:{$sum:"$quantity
+"}}}}])
+[
+  { _id: 0, count: 3, totalQuantity: 70 },
+  { _id: 100, count: 3, totalQuantity: 25 },
+  { _id: 500, count: 2, totalQuantity: 13 },
+  { _id: 'Other', count: 1, totalQuantity: 10 }
+]
+School>
+ Use $lookup to join with a new suppliers collection.
+School> db.sales.aggregate([{$lookup:{from:"suppliers",localField:"category",foreignField:"category",as:"supplier_info"}}])
+[
+  {
+    _id: ObjectId('69a93aae92e34a8e98cebea4'),
+    item: 'notebook',
+    category: 'stationery',
+    quantity: 15,
+    price: 55,
+    date: ISODate('2026-03-01T00:00:00.000Z'),
+    revenue: 825,
+    supplier_info: [
+      {
+        _id: ObjectId('69a944ab92e34a8e98cebead'),
+        supplier_id: 1,
+        supplier_name: 'ABC Traders',
+        category: 'stationery'
+      }
+    ]
+  },
+  {
+    _id: ObjectId('69a93aae92e34a8e98cebea5'),
+    item: 'pen',
+    category: 'stationery',
+    quantity: 25,
+    price: 50,
+    date: ISODate('2026-03-02T00:00:00.000Z'),
+    revenue: 1250,
+    supplier_info: [
+      {
+        _id: ObjectId('69a944ab92e34a8e98cebead'),
+        supplier_id: 1,
+        supplier_name: 'ABC Traders',
+        category: 'stationery'
+      }
+    ]
+  },
+  {
+    _id: ObjectId('69a93aae92e34a8e98cebea6'),
+    item: 'pencil',
+    category: 'stationery',
+    quantity: 30,
+    price: 60,
+    date: ISODate('2026-02-15T00:00:00.000Z'),
+    revenue: 1800,
+    supplier_info: [
+      {
+        _id: ObjectId('69a944ab92e34a8e98cebead'),
+        supplier_id: 1,
+        supplier_name: 'ABC Traders',
+        category: 'stationery'
+      }
+    ]
+  },
+  {
+    _id: ObjectId('69a93aae92e34a8e98cebea7'),
+    item: 'school bag',
+    category: 'accessories',
+    quantity: 10,
+    price: 1000,
+    date: ISODate('2026-02-25T00:00:00.000Z'),
+    revenue: 10000,
+    supplier_info: [
+      {
+        _id: ObjectId('69a944ab92e34a8e98cebeae'),
+        supplier_id: 2,
+        supplier_name: 'Global Bags',
+        category: 'accessories'
+      }
+    ]
+  },
+  {
+    _id: ObjectId('69a93aae92e34a8e98cebea8'),
+    item: 'water bottle',
+    category: 'accessories',
+    quantity: 5,
+    price: 200,
+    date: ISODate('2026-01-10T00:00:00.000Z'),
+    revenue: 1000,
+    supplier_info: [
+      {
+        _id: ObjectId('69a944ab92e34a8e98cebeae'),
+        supplier_id: 2,
+        supplier_name: 'Global Bags',
+        category: 'accessories'
+      }
+    ]
+  },
+  {
+    _id: ObjectId('69a9414592e34a8e98cebea9'),
+    item: 'Textbook',
+    category: 'books',
+    quantity: 8,
+    price: 300,
+    date: ISODate('2026-03-05T08:39:33.034Z'),
+    revenue: 2400,
+    supplier_info: [
+      {
+        _id: ObjectId('69a944ab92e34a8e98cebeb0'),
+        supplier_id: 4,
+        supplier_name: 'Book House',
+        category: 'books'
+      }
+    ]
+  },
+  {
+    _id: ObjectId('69a9414592e34a8e98cebeaa'),
+    item: 'Calculator',
+    category: 'electronics',
+    quantity: 6,
+    price: 800,
+    date: ISODate('2026-03-05T08:39:33.034Z'),
+    revenue: 4800,
+    supplier_info: [
+      {
+        _id: ObjectId('69a944ab92e34a8e98cebeaf'),
+        supplier_id: 3,
+        supplier_name: 'Tech World',
+        category: 'electronics'
+      }
+    ]
+  }
+ 
+]
+School>
+ Use $project to display item names in uppercase using $toUpper.
+
+School> db.sales.aggregate([{$project:{_id:0,itemUpper:{$toUpper:"$item"}   
+... }}])
+[
+  { itemUpper: 'NOTEBOOK' },
+  { itemUpper: 'PEN' },
+  { itemUpper: 'PENCIL' },
+  { itemUpper: 'SCHOOL BAG' },
+  { itemUpper: 'WATER BOTTLE' },
+  { itemUpper: 'TEXTBOOK' },
+  { itemUpper: 'CALCULATOR' },
+  { itemUpper: 'LUNCH BOX' },
+  { itemUpper: 'UNIFORM' }
+]
+School>

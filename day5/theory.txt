@@ -1,0 +1,1432 @@
+1)aggregation pipeline:-
+data-ne  step by step aayi process cheyth final reslt edukkunna mongoDB system aanu aggregation pipeline.
+
+imagine you have a collection of studnts in mongoDB:
+{
+    name:"Ammeen",
+    mark:55,
+    department:"CS"
+}
+
+Find only CS students
+
+Calculate average mark
+
+Sort by highest mark
+
+Group by department
+
+Doing all this in one query = Aggregation Pipeline
+
+it is a step by step data processing system
+
+mongoDB sends data through multiple stages like a pipe line.each stages modifies the data and passes to next stage.
+
+1)$match:- filter docmnts,its like find(),but its used inside of aggregation.
+namukk venda data mathram edukkan use chyyn.
+ex:-
+physics students mathram edukkan:-
+simple> db.students.aggregate([{$match:{department:"
+Physics"}}])
+[
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea5'),      
+    student_id: 'ST2002',
+    name: 'Anjali Nair',
+    department: 'Physics',
+    enrollment_year: 2023,
+    marks: 76,
+    gpa: 3.2
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea8'),      
+    student_id: 'ST2005',
+    name: 'Arjun Kumar',
+    department: 'Physics',
+    enrollment_year: 2023,
+    marks: 69,
+    gpa: 2.9
+  }
+]
+simple>
+
+2) $project:- fields select cheyyan,unwanted fields remove and specific fields maathram show cheyyan ,field rename cheyyan.
+Ethokke fields kaanikkam? Ethokke hide cheyyam? ennu decide cheyyunna stage aanu $project
+ex:-
+simple> db.students.aggregate([{$project:{name:1,dep
+department:1,marks:1,_id:0}}])
+[
+    //first 5 stdnsil department filed alla major field aan  athukondaan deptmnts illathat athupole marks fieldum illa gpa ollu
+  { name: 'Alice Johnson' },
+  { name: 'Bob Williams' },
+  { name: 'Charlie Davis' },
+  { name: 'David Smith' },
+  { name: 'Eva Brown' },
+  { name: 'Rahul Menon', department: 'Computer Science', marks: 88 },
+  { name: 'Anjali Nair', department: 'Physics', marks: 76 },
+  { name: 'Kiran Das', department: 'Mathematics', marks: 91 },
+  { name: 'Sneha Thomas', department: 'Computer Science', marks: 84 },
+  { name: 'Arjun Kumar', department: 'Physics', marks: 69 }
+]
+simple>
+3)$group:-docmnts -ne oru field prakaram group cheyyunnath aanu.
+simple> db.students.aggregate([{$group:{_id:"$major",totalStudents:{$sum:1}}}])
+[
+  { _id: null, totalStudents: 5 },
+  { _id: 'Physics', totalStudents: 2 },
+  { _id: 'Computer Science', totalStudents: 2 },    
+  { _id: 'Mathematics', totalStudents: 1 }
+]
+simple>
+
+4) $sort :- docmnts order cheyyan use cheyyunnath
+ascending and descnding
+simple> db.students.aggregate([{$sort:{gpa:-1}}])
+[
+  {
+    _id: ObjectId('693907450d435ae6d9cebea6'),      
+    student_id: 'ST1003',
+    name: 'Charlie Davis',
+    major: 'Computer Science',
+    enrollment_year: 2022,
+    gpa: 3.99
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea6'),      
+    student_id: 'ST2003',
+    name: 'Kiran Das',
+    department: 'Mathematics',
+    enrollment_year: 2022,
+    marks: 91,
+    gpa: 3.9
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea4'),      
+    student_id: 'ST1001',
+    name: 'Alice Johnson',
+    major: 'Computer Science',
+    enrollment_year: 2022,
+    gpa: 3.85
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea4'),      
+    student_id: 'ST2001',
+    name: 'Rahul Menon',
+    department: 'Computer Science',
+    enrollment_year: 2022,
+    marks: 88,
+    gpa: 3.7
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea8'),      
+    student_id: 'ST1005',
+    name: 'Eva Brown',
+    major: 'Mathematics',
+    enrollment_year: 2023,
+    gpa: 3.65
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea7'),      
+    student_id: 'ST2004',
+    name: 'Sneha Thomas',
+    department: 'Computer Science',
+    enrollment_year: 2024,
+    marks: 84,
+    gpa: 3.6
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea7'),      
+    student_id: 'ST1004',
+    name: 'David Smith',
+    major: 'Physics',
+    enrollment_year: 2022,
+    gpa: 3.4
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea5'),      
+    student_id: 'ST2002',
+    name: 'Anjali Nair',
+    department: 'Physics',
+    enrollment_year: 2023,
+    marks: 76,
+    gpa: 3.2
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea5'),      
+    student_id: 'ST1002',
+    name: 'Bob Williams',
+    major: 'Physics',
+    enrollment_year: 2023,
+    gpa: 3.1
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea8'),      
+    student_id: 'ST2005',
+    name: 'Arjun Kumar',
+    department: 'Physics',
+    enrollment_year: 2023,
+    marks: 69,
+    gpa: 2.9
+  }
+]
+simple>
+
+5)$limit:-
+resultil yethre docmnts venamennu decide cheyyunnu.
+
+simple> db.students.aggregate([{$sort:{gpa:-1}},{$li
+$limit:2}])
+[
+  {
+    _id: ObjectId('693907450d435ae6d9cebea6'),      
+    student_id: 'ST1003',
+    name: 'Charlie Davis',
+    major: 'Computer Science',
+    enrollment_year: 2022,
+    gpa: 3.99
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea6'),      
+    student_id: 'ST2003',
+    name: 'Kiran Das',
+    department: 'Mathematics',
+    enrollment_year: 2022,
+    marks: 91,
+    gpa: 3.9
+  }
+]
+simple>
+
+7)$skip:-Certain number of documents skip cheyyunnu.
+
+simple> db.students.aggregate([{$sort:{enrollment_ye
+enrollment_year:1}},{$skip:2},{$limit:2}])
+[
+  {
+    _id: ObjectId('693907450d435ae6d9cebea4'),      
+    student_id: 'ST1001',
+    name: 'Alice Johnson',
+    major: 'Computer Science',
+    enrollment_year: 2022,
+    gpa: 3.85
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea6'),      
+    student_id: 'ST1003',
+    name: 'Charlie Davis',
+    major: 'Computer Science',
+    enrollment_year: 2022,
+    gpa: 3.99
+  }
+]
+simple>
+syntax:-
+
+
+db.collection.aggregate([
+    {stage1},
+    {stage2},
+    {stage3}
+])
+
+eg:-
+year wise avg GPA 
+simple> db.students.aggregate([{$group:{_id:"$enrollment_year",avgGpa:{$avg:"$gpa"},totalStudents:{$sum:
+1}}},{$sort:{_id:1}}])
+[
+  { _id: 2022, avgGpa: 3.768, totalStudents: 5 },
+  { _id: 2023, avgGpa: 3.2125, totalStudents: 4 },  
+  { _id: 2024, avgGpa: 3.6, totalStudents: 1 }      
+]
+simple>
+
+===>Operators
+1)$sum:-values add cheyyunnu
+there are 2 types:-
+i)count cheyyan 
+eg:- totalStudents:{$sum:1}->it means ooro docmntinm 1 add cheyyum  count kittan.
+
+ii)field values add cheyyan:-
+totalMarks:{$sum:"$marks"}->marks field ellam add cheyyum
+simple> db.students.aggregate([{$group:{_id:"$depart
+ment",totalMarks:{$sum:"$marks"}}}])
+[
+  { _id: 'Mathematics', totalMarks: 91 },
+  { _id: 'Physics', totalMarks: 145 },
+  { _id: 'Computer Science', totalMarks: 172 }      
+]
+
+
+simple>
+
+2)$avg:- avg calculate chyyan
+simple> db.students.aggregate([{$group:{_id:"$major",avgGpa:{$avg:"$gpa"}}}])
+[
+  { _id: 'Physics', avgGpa: 3.25 },
+  { _id: 'Computer Science', avgGpa: 3.92 },        
+  { _id: 'Mathematics', avgGpa: 3.65 }
+]
+simple>
+
+3)$min:- smallest value kandupidikkunnu
+//deprtmnt wise lowst gpa
+simple> db.students.aggregate([{$group:{_id:"$major",lowestGpa:{$min:"$gpa"}}}])
+[
+  { _id: 'Mathematics', lowestGpa: 3.65 },
+  { _id: 'Computer Science', lowestGpa: 3.85 },     
+  { _id: 'Physics', lowestGpa: 3.1 },
+  { _id: null, lowestGpa: 2.9 }
+]
+simple>
+===Arithmetic operators===
+$add and $subtract simple> db.students.aggregate([{$project:{name:1,tot
+totalMarks:{$add:["$marks",10]},_id:0}}])
+[
+  { name: 'Alice Johnson', totalMarks: null },
+  { name: 'Bob Williams', totalMarks: null },       
+  { name: 'Charlie Davis', totalMarks: null },      
+  { name: 'David Smith', totalMarks: null },        
+  { name: 'Eva Brown', totalMarks: null },
+  { name: 'Rahul Menon', totalMarks: 98 },
+  { name: 'Anjali Nair', totalMarks: 86 },
+  { name: 'Kiran Das', totalMarks: 101 },
+  { name: 'Sneha Thomas', totalMarks: 94 },
+  { name: 'Arjun Kumar', totalMarks: 79 }
+]
+simple> db.students.aggregate([{$project:{name:1,totalMarks:{$subtract:["$marks",10]},_id:0}}])
+[
+  { name: 'Alice Johnson', totalMarks: null },
+  { name: 'Bob Williams', totalMarks: null },       
+  { name: 'Charlie Davis', totalMarks: null },      
+  { name: 'David Smith', totalMarks: null },        
+  { name: 'Eva Brown', totalMarks: null },
+  { name: 'Rahul Menon', totalMarks: 78 },
+  { name: 'Anjali Nair', totalMarks: 66 },
+  { name: 'Kiran Das', totalMarks: 81 },
+  { name: 'Sneha Thomas', totalMarks: 74 },
+  { name: 'Arjun Kumar', totalMarks: 59 }
+]
+simple>
+
+$divide simple> db.students.aggregate([{$project:{name:1,totalMarks:{$divide:["$marks",10]},_id:0}}])
+[
+  { name: 'Alice Johnson', totalMarks: null },
+  { name: 'Bob Williams', totalMarks: null },       
+  { name: 'Charlie Davis', totalMarks: null },      
+  { name: 'David Smith', totalMarks: null },        
+  { name: 'Eva Brown', totalMarks: null },
+  { name: 'Rahul Menon', totalMarks: 8.8 },
+  { name: 'Anjali Nair', totalMarks: 7.6 },
+  { name: 'Kiran Das', totalMarks: 9.1 },
+  { name: 'Sneha Thomas', totalMarks: 8.4 },        
+  { name: 'Arjun Kumar', totalMarks: 6.9 }
+]
+simple>
+
+$multiply:-
+simple> db.students.aggregate([{$project:{name:1,totalMarks:{$multiply:["$marks",10]},_id:0}}])
+[
+
+  { name: 'Rahul Menon', totalMarks: 880 },
+  { name: 'Anjali Nair', totalMarks: 760 },
+  { name: 'Kiran Das', totalMarks: 910 },
+  { name: 'Sneha Thomas', totalMarks: 840 },        
+  { name: 'Arjun Kumar', totalMarks: 690 }
+]
+simple>
+acumlators:-
+sum,$avg,$max,$min,$count
+
+*)$lookup:-oru collectionil ulla data,mattoru collectionil ulla data koodi join cheyyunnath aanu $lookup.
+//orders collection
+{
+  _id: 1,
+  customerId: 101,
+  product: "Laptop",
+  amount: 800
+}
+
+//customers collection
+
+{
+  _id: 101,
+  name: "Mehrin",
+  city: "Pattambi"
+}
+Ivide problem entha?
+
+Orders il customer name illa.
+CustomerId mathram und.
+
+Appo nammal order fetch cheyyumbo:
+
+“Customer name koodi venam” enkil?
+
+athin $lookup use cheyyum.
+syntax of $lookup:-
+
+{
+  $lookup:{
+    from:"customers", //->from ->ethu collection ninn data venam
+    localField:"customerId", //localField → current collection il ullla field
+    foriegnField:"_id", //foreignField → other collection il compare cheyyanulla field
+    as:"customerDetails"  //as → output il new field name
+  }
+}
+//output
+{
+  _id: 1,
+  customerId: 101,
+  product: "Laptop",
+  amount: 800,
+  customerDetails: [
+    {
+      _id: 101,
+      name: "Mehrin",
+      city: "Pattambi"
+    }
+  ]
+}
+
+
+example of $lookupSchool> db.students.aggregate([{$lookup:{from:"courses",localField:"courseId",foreignField:"_id",as:"cou
+rseDetails"}}])
+[
+  {
+    _id: 1,
+    name: 'Aisha',
+    age: 21,
+    courseId: 102,
+    courseDetails: [
+      {
+        _id: 102,
+        name: 'Data Science',
+        duration: '8 months',
+        institution: 'Data Institute'
+      }
+    ]
+  },
+  {
+    _id: 2,
+    name: 'Rahul',
+    age: 22,
+    courseId: 103,
+    courseDetails: [
+      {
+        _id: 103,
+        name: 'Cyber Security',
+        duration: '5 months',
+        institution: 'SecureTech'
+      }
+    ]
+  },
+  {
+    _id: 3,
+    name: 'Meera',
+    age: 20,
+    courseId: 104,
+    courseDetails: [
+      {
+        _id: 104,
+        name: 'Mobile App Development',
+        duration: '4 months',
+        institution: 'AppWorld'
+      }
+    ]
+  },
+  {
+    _id: 4,
+    name: 'Arjun',
+    age: 23,
+    courseId: 105,
+    courseDetails: [
+      {
+        _id: 105,
+        name: 'Cloud Computing',
+        duration: '7 months',
+        institution: 'Cloud Masters'
+      }
+    ]
+  },
+  {
+    _id: 5,
+    name: 'Nila',
+    age: 21,
+    courseId: 106,
+    courseDetails: [
+      {
+        _id: 106,
+        name: 'Artificial Intelligence',
+        duration: '9 months',
+        institution: 'AI Research Hub'
+      }
+    ]
+  },
+  {
+    _id: 6,
+    name: 'Kiran',
+    age: 24,
+    courseId: 107,
+    courseDetails: [
+      {
+        _id: 107,
+        name: 'UI/UX Design',
+        duration: '3 months',
+        institution: 'Design Studio'
+      }
+    ]
+  },
+  {
+    _id: 7,
+    name: 'Sana',
+    age: 19,
+    courseId: 108,
+    courseDetails: [
+      {
+        _id: 108,
+        name: 'DevOps Engineering',
+        duration: '6 months',
+        institution: 'DevOps Academy'
+      }
+    ]
+  },
+  {
+    _id: 8,
+    name: 'Adil',
+    age: 22,
+    courseId: 109,
+    courseDetails: [
+      {
+        _id: 109,
+        name: 'Blockchain Development',
+        duration: '7 months',
+        institution: 'Crypto Institute'
+      }
+    ]
+  },
+  {
+    _id: 9,
+    name: 'Fathima',
+    age: 20,
+    courseId: 110,
+    courseDetails: [
+      {
+        _id: 110,
+        name: 'Machine Learning',
+        duration: '8 months',
+        institution: 'ML Labs'
+      }
+    ]
+  }
+School>
+
+
+===>pipeline based $lookup_
+School> db.students.aggregate([
+...   {
+...     $lookup: {
+...       from: "courses",
+...       let: { cid: "$courseId" },//pipline insidil  std field access cheyyan pattilla,pipeline runs inside courses collectin,so std value pass chyyanm pipelinekk pass chyyan varible vnm
+...       pipeline: [
+...         {
+...           $match: {
+...             $expr: {
+...               $eq: ["$_id", "$$cid"]
+...             }
+...           }
+...         }
+...       ],
+...       as: "courseDetails"
+...     }
+...   }
+... ])
+...
+[
+  {
+    _id: 1,
+    name: 'Aisha',
+    age: 21,
+    courseId: 102,
+    courseDetails: [
+      {
+        _id: 102,
+        name: 'Data Science',
+        duration: '8 months',
+        institution: 'Data Institute'
+      }
+    ]
+  },
+  {
+    _id: 2,
+    name: 'Rahul',
+    age: 22,
+    courseId: 103,
+    courseDetails: [
+      {
+        _id: 103,
+        name: 'Cyber Security',
+        duration: '5 months',
+        institution: 'SecureTech'
+      }
+    ]
+  },
+  {
+    _id: 3,
+    name: 'Meera',
+    age: 20,
+    courseId: 104,
+    courseDetails: [
+      {
+        _id: 104,
+        name: 'Mobile App Development',
+        duration: '4 months',
+        institution: 'AppWorld'
+      }
+    ]
+  },
+  {
+    _id: 4,
+    name: 'Arjun',
+    age: 23,
+    courseId: 105,
+    courseDetails: [
+      {
+        _id: 105,
+        name: 'Cloud Computing',
+        duration: '7 months',
+        institution: 'Cloud Masters'
+      }
+    ]
+  },
+  {
+    _id: 5,
+    name: 'Nila',
+    age: 21,
+    courseId: 106,
+    courseDetails: [
+      {
+        _id: 106,
+        name: 'Artificial Intelligence',
+        duration: '9 months',
+        institution: 'AI Research Hub'
+      }
+    ]
+  },
+  {
+    _id: 6,
+    name: 'Kiran',
+    age: 24,
+    courseId: 107,
+    courseDetails: [
+      {
+        _id: 107,
+        name: 'UI/UX Design',
+        duration: '3 months',
+        institution: 'Design Studio'
+      }
+    ]
+  },
+  {
+    _id: 7,
+    name: 'Sana',
+    age: 19,
+    courseId: 108,
+    courseDetails: [
+      {
+        _id: 108,
+        name: 'DevOps Engineering',
+        duration: '6 months',
+        institution: 'DevOps Academy'
+      }
+    ]
+  },
+  {
+    _id: 8,
+    name: 'Adil',
+    age: 22,
+    courseId: 109,
+    courseDetails: [
+      {
+        _id: 109,
+        name: 'Blockchain Development',
+        duration: '7 months',
+        institution: 'Crypto Institute'
+      }
+    ]
+  },
+  {
+    _id: 9,
+    name: 'Fathima',
+    age: 20,
+    courseId: 110,
+    courseDetails: [
+      {
+        _id: 110,
+        name: 'Machine Learning',
+        duration: '8 months',
+        institution: 'ML Labs'
+      }
+    ]
+  }
+]
+School>
+
+Q)Why do we use let in pipeline lookup?
+
+Because in pipeline-based $lookup, the inner pipeline runs in the context of the foreign collection, so we must explicitly pass outer document fields as variables using let to compare them using $expr.
+
+
+====$unwind:-
+$unwind mongoDB aggregation piplen il use cheyyunna oru stage aan.
+oru domcntil array undekil aa array-ilulla oro item-um separate docmnt aayi maattunnathu $unwind aanu.
+eg:- studnt rcrd:-
+{name:"Anu",
+sub:["maths","Phy","chem"]}//sub oru array und
+Using $unwind 
+{name:"anu",sub:"maths"}
+{name:"anu",sub:"phy"}
+{name:"anu",sub:"chem"}
+ith oru separete docmnt aayi maarum
+
+Q)why use $unwind?
+*array data sepate aayi procees cheyyan
+* count cheyyan
+*filter,sorting
+in some cases ,avoid $unwind:-
+if large array cases performnce issuec hance nd,so split cheyyenda aavashym illa.
+
+syntx:
+db.collection.aggrgate([
+  {$unwind:"$arrayField"}
+])
+
+->Special options in $unwind:-
+1)preserverNullAndEmptyArrays:-
+empty array undenkil docmnt remove aavum  appol empty array docmnts remove cheyyathe keep cheyyan preserverNullAndEmptyArrays use cheyyanam.
+
+=>$facet:-
+aggregtion piplinil use cheyyunna oru stage aan $facet.oru data set yeduth athil ninnu oretim multiple reslts undaakaan help cheyuunna tool aanu $facet.
+
+when?
+dashboardil data create cheyymbol,filters ,pagination  and totalcount orumich cheyumbol ,multiple analytics res orumich chyumbol.
+
+where?
+mogoDB aggregation pepeline-il $match,$grp,$projct polulla stages ntoppam.
+
+how?$facet insidil multiple pipeliens define cheyyam.
+each pipelin same input data usecheyyum and separate reslt return cheyyum.
+eg:-
+Q)Total Students Count
+Major / Department wise count
+ Top 2 GPA Students
+
+simple> db.students.aggregate([{$facet:{totalStd:[{$count:"count"}],departmentwise:[{$group:{_id:{$ifNull:["$major","$department"]},count:{$sum:1}}}],topGPA:[{$sort:{gpa:-1}},{$limit:2},{$project:{_id:0,name:1,gpa:1}}]}}])
+[
+  {
+    totalStd: [ { count: 10 } ],
+    departmentwise: [
+      { _id: 'Mathematics', count: 2 },
+      { _id: 'Computer Science', count: 4 },
+      { _id: 'Physics', count: 4 }
+    ],
+    topGPA: [
+      { name: 'Charlie Davis', gpa: 3.99 },
+      { name: 'Kiran Das', gpa: 3.9 }
+    ]
+  }
+]
+simple>
+*$ifNull->ee value undeggil ath use cheyyunnu othervise ithu use cheyyunna
+eg:- if majr exists use majr ,if mjr is null or missing  use departmt.
+
+without facet using 3 seperte queries
+db.students.countDocuments()
+db.students.aggregate([{ $group: ... }])
+db.students.find().sort({ gpa: -1 }).limit(2)
+
+we use $facet  to generate multiple aggregated reslts from same dataset in a single query, improving performance and consistency.
+
+=>$bucket:-
+oru number field yeduth(marks,price,slalary,age) ath range aayi group cheyyan use cheyyunna mongoDB tool aanu $bucket
+
+real life ex:-
+oru classil teachers marks nokki stdtsne grp cheyyunna
+*0-40->fail,41-70->pass,71-89->distinction,90-100->rank
+tachers marks range aayi divide cheythallo.athaan $bucket
+
+syntx:-
+{$bucket:{
+  groupBy:field,
+  boundaries:[range1,2,3],
+  default:'other',
+  output:{count:{$sum:1}}
+}}
+which field to grp?
+griupBy:$marks"
+
+*boundaries:-
+rnage values define cheyyunnu.
+boundaries: [0, 50, 75, 100]
+
+Meaning:-
+
+0 ≤ value < 50
+
+50 ≤ value < 75
+
+75 ≤ value < 100
+output :- what rslt want inside each bucket?
+ex:-
+Count
+
+Average
+
+Sum
+
+ex:-
+simple>  db.students.aggregate([{$bucket:{groupBy:"$gpa",boundaries:[0,3.0,3.5,4.0],default:"other",output:{count:{$sum:1},std:{$push:"$name"}}}}])
+[
+  { _id: 0, count: 1, std: [ 'Arjun Kumar' ] },
+  {
+    _id: 3,
+    count: 3,
+    std: [ 'Bob Williams', 'David Smith', 'Anjali Nair' ]
+  },
+  {
+    _id: 3.5,
+    count: 6,
+    std: [
+      'Alice Johnson',
+      'Charlie Davis',
+      'Eva Brown',
+      'Rahul Menon',
+      'Kiran Das',
+      'Sneha Thomas'
+    ]
+  }
+]
+simple>
+how its works internally?
+Students Data
+        ↓
+    $bucket
+        ↓
+Range Grouping
+        ↓
+Output per range
+1)takes gpa
+2)check which boundary range it belongs to
+3)places dcmnt in that bucket
+4)applies output aggregtn count cheyyum then std name list  chyym
+
+=>$bucketAuto:-
+in $bucket,we define the ranges, in$bucketAuto,mongoDB defines the range 
+
+syntax:-
+{
+  $bucketAuto:{
+    groupBy: field,
+    buckets:numbr,
+    output:{
+      field1:{},
+      field2:{}
+    }
+  }
+}
+
+simple> db.students.aggregate([{$bucketAuto:{groupBy:"$gpa",buckets:4,output
+output:{count:{$sum:1},std:{$push:"$name"}}}}])
+[
+  {
+    _id: { min: 2.9, max: 3.4 },
+    count: 3,
+    std: [ 'Bob Williams', 'Anjali Nair', 'Arjun Kumar' ]
+  },
+  {
+    _id: { min: 3.4, max: 3.7 },
+    count: 3,
+    std: [ 'David Smith', 'Eva Brown', 'Sneha Thomas' ]
+  },
+  {
+    _id: { min: 3.7, max: 3.99 },
+    count: 3,
+    std: [ 'Alice Johnson', 'Rahul Menon', 'Kiran Das' ]
+  },
+  { _id: { min: 3.99, max: 3.99 }, count: 1, std: [ 'Charlie Davis' ] }     
+]
+simple>
+
+===>update style stages:-
+aggregtion pipeline use chyeth update chyyunntah:-
+
+common update style stages :-
+$set and $addFields are same:-
+add or modifies fields ,add new fields,update existing fields ,doesnot remov old fields.
+
+{$set:{status:"passed",
+totalmarks:{$add:["$marks",5]}}}
+
+$unset:-remove fields,delete fields,
+{$unset:"password" }or
+{
+  $unset:["password",'secrtykey"]
+  }
+
+
+
+
+$replaceRoot:-replce the entire docmnt
+{
+  $replaceRoot:{
+    newRoot:{
+name:"$name",
+   city: "$profile.city"->value obj aayirikkanm
+    }
+
+
+  }
+}//completely replce docmnt,dangers if you dont understnd strctre.
+
+$replaceWith:- modern version of $replaceRoot
+{
+  $rplceWith:"$profile"
+}//cler syntax
+
+update style stages  only modify  docmnt structure .dont change no of docmnts,grp docmnts,filter dcmnts.
+
+
+===>Terminal stages:- aggregation pipeline il last use cheyyuunna stage aan .final stage aan terminal stage.
+
+real life ex:-
+we goto supermarket=>then we will collect items=>we will pay the bill in the counter.that bill counter is the Terminal stage.
+
+*common terminal stages in mongoDb:-
+1)$out:-out use chyuumbo target collection arleady undegil mongoDB 1st athine delete cheyyum,pinne new aggregation reslt full aayi write cheyyum.
+*its not update,not merge,not append full overwrite.
+
+real life ex:-
+Ningal oru notebook use cheyyunnu
+
+Teacher paranju: "Old page ellam tear cheyyu"
+
+Pinne new content write cheyyu
+
+simple> db.students.aggregate([{$match:{marks:{$exists:true,$gt:80}}},{$out:
+"passed_std"}])
+
+simple> db.passed_std.find().pretty()
+[
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea4'),
+    student_id: 'ST2001',
+    name: 'Rahul Menon',
+    department: 'Computer Science',
+    enrollment_year: 2022,
+    marks: 88,
+    gpa: 3.7
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea6'),
+    student_id: 'ST2003',
+    name: 'Kiran Das',
+    department: 'Mathematics',
+    enrollment_year: 2022,
+    marks: 91,
+    gpa: 3.9
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea7'),
+    student_id: 'ST2004',
+    name: 'Sneha Thomas',
+    department: 'Computer Science',
+    enrollment_year: 2024,
+    marks: 84,
+    gpa: 3.6
+  }
+]
+simple>
+
+//department phy std:-
+simple> db.students.aggregate([
+...   { $match: { department: "Physics" } },
+...   { $out: "physics_students" }
+... ])
+
+simple> db.phy_std.find().pretty()
+
+simple> db.physics_students.find().pretty()
+[
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea5'),
+    student_id: 'ST2002',
+    name: 'Anjali Nair',
+    department: 'Physics',
+    enrollment_year: 2023,
+    marks: 76,
+    gpa: 3.2
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea8'),
+    student_id: 'ST2005',
+    name: 'Arjun Kumar',
+    department: 'Physics',
+    enrollment_year: 2023,
+    marks: 69,
+    gpa: 2.9
+  }
+]
+simple>
+
+but this is dangerous in production,bcoz accidently use chythl old data nashtam aakum,backup illenkil problm,so production il mostly $merge use cheyyunnath.
+
+2)$merge:-
+old datante koode new data  koode mix cheyyunnu.aggregation reslt existing collectionil safe ayyi,add/update cheyyan use chyyunnu.$out pole full delete cheyyilla.match cheyyum,upadte chyyum,illengil insert chryyum.
+
+
+ {
+    $merge: {
+      into: "passed_students",
+      on: "student_id",
+      whenMatched: "merge",
+      whenNotMatched: "insert"
+    }
+ }
+ into → target collection
+
+on → match cheyyan field
+
+whenMatched: "merge" → update
+
+whenNotMatched: "insert" → new insert
+
+$merge is a terminal aggregation stage used to merge pipeline results into an existing collection with insert or update behavior instead of replacing it.
+diff between $merge vs $out:-
+Feature	                  $out    $merge
+Old data delete cheyyumo?	Yes    	No 
+Safe for production?	   Risky	  Yes
+Update support undo?	   No	      Yes
+Insert support undo?	   Yes	     Yes
+
+===>string expressions:-
+1)$toUpper:-
+simple> db.students.aggregate([{$project:{name:1,upperName:{$toUpper:"$name"
+}}}])
+[
+  {
+    _id: ObjectId('693907450d435ae6d9cebea4'),
+    name: 'Alice Johnson',
+    upperName: 'ALICE JOHNSON'
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea5'),
+    name: 'Bob Williams',
+    upperName: 'BOB WILLIAMS'
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea6'),
+    name: 'Charlie Davis',
+    upperName: 'CHARLIE DAVIS'
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea7'),
+    name: 'David Smith',
+    upperName: 'DAVID SMITH'
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea8'),
+    name: 'Eva Brown',
+    upperName: 'EVA BROWN'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea4'),
+    name: 'Rahul Menon',
+    upperName: 'RAHUL MENON'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea5'),
+    name: 'Anjali Nair',
+    upperName: 'ANJALI NAIR'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea6'),
+    name: 'Kiran Das',
+    upperName: 'KIRAN DAS'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea7'),
+    name: 'Sneha Thomas',
+    upperName: 'SNEHA THOMAS'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea8'),
+    name: 'Arjun Kumar',
+    upperName: 'ARJUN KUMAR'
+  }
+]
+simple>
+2)$toLower:-
+simple> db.students.aggregate([{$project:{name:1,lowerName:{$toLower:"$name"
+}}}])
+[
+  {
+    _id: ObjectId('693907450d435ae6d9cebea4'),
+    name: 'Alice Johnson',
+    lowerName: 'alice johnson'
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea5'),
+    name: 'Bob Williams',
+    lowerName: 'bob williams'
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea6'),
+    name: 'Charlie Davis',
+    lowerName: 'charlie davis'
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea7'),
+    name: 'David Smith',
+    lowerName: 'david smith'
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea8'),
+    name: 'Eva Brown',
+    lowerName: 'eva brown'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea4'),
+    name: 'Rahul Menon',
+    lowerName: 'rahul menon'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea5'),
+    name: 'Anjali Nair',
+    lowerName: 'anjali nair'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea6'),
+    name: 'Kiran Das',
+    lowerName: 'kiran das'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea7'),
+    name: 'Sneha Thomas',
+    lowerName: 'sneha thomas'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea8'),
+    name: 'Arjun Kumar',
+    lowerName: 'arjun kumar'
+  }
+]
+simple>
+
+3)$concat:-
+simple> db.students.aggregate([{$project:{fullInfo:{$concat:["$name","-","$d
+epartment"]}}}])
+[
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea4'),
+    fullInfo: 'Rahul Menon-Computer Science'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea5'),
+    fullInfo: 'Anjali Nair-Physics'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea6'),
+    fullInfo: 'Kiran Das-Mathematics'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea7'),
+    fullInfo: 'Sneha Thomas-Computer Science'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea8'),
+    fullInfo: 'Arjun Kumar-Physics'
+  }
+]
+simple>
+
+4)$strLenCP:-string length find chyyan
+simple> db.students.aggregate([
+...   {
+...     $project: {
+...       name: 1,
+...       length: { $strLenCP: "$name" }
+...     }
+...   }
+... ])
+[
+  {
+    _id: ObjectId('693907450d435ae6d9cebea4'),
+    name: 'Alice Johnson',
+    length: 13
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea5'),
+    name: 'Bob Williams',
+    length: 12
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea6'),
+    name: 'Charlie Davis',
+    length: 13
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea7'),
+    name: 'David Smith',
+    length: 11
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea8'),
+    name: 'Eva Brown',
+    length: 9
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea4'),
+    name: 'Rahul Menon',
+    length: 11
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea5'),
+    name: 'Anjali Nair',
+    length: 11
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea6'),
+    name: 'Kiran Das',
+    length: 9
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea7'),
+    name: 'Sneha Thomas',
+    length: 12
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea8'),
+    name: 'Arjun Kumar',
+    length: 11
+  }
+]
+simple>
+
+5)$substr:-substrng edukkan.
+db.students.aggregate([
+  {
+    $project: {
+      shortName: { $substr: ["$name", 0, 5] }
+    }
+  }
+])
+
+[
+  { _id: ObjectId('693907450d435ae6d9cebea4'), shortName: 'Alice' },        
+  { _id: ObjectId('693907450d435ae6d9cebea5'), shortName: 'Bob W' },        
+  { _id: ObjectId('693907450d435ae6d9cebea6'), shortName: 'Charl' },        
+  { _id: ObjectId('693907450d435ae6d9cebea7'), shortName: 'David' },        
+  { _id: ObjectId('693907450d435ae6d9cebea8'), shortName: 'Eva B' },        
+  { _id: ObjectId('6986d8e46d2779adf4cebea4'), shortName: 'Rahul' },        
+  { _id: ObjectId('6986d8e46d2779adf4cebea5'), shortName: 'Anjal' },        
+  { _id: ObjectId('6986d8e46d2779adf4cebea6'), shortName: 'Kiran' },        
+  { _id: ObjectId('6986d8e46d2779adf4cebea7'), shortName: 'Sneha' },        
+  { _id: ObjectId('6986d8e46d2779adf4cebea8'), shortName: 'Arjun' }
+]
+simple>
+
+
+===>conditional expressions:-
+1)$cond 
+syntx:-
+{$cond:{if:<condtn>,
+then:<true val>,
+else:<false val>
+}}
+simple> db.students.aggregate([{$project:{name:1,result:{$cond:{if:{$gt:["$marks",80]},then:"pass",else:"fail"}}}}])
+[
+  {
+    _id: ObjectId('693907450d435ae6d9cebea4'),
+    name: 'Alice Johnson',
+    result: 'fail'
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea5'),
+    name: 'Bob Williams',
+    result: 'fail'
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea6'),
+    name: 'Charlie Davis',
+    result: 'fail'
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea7'),
+    name: 'David Smith',
+    result: 'fail'
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea8'),
+    name: 'Eva Brown',
+    result: 'fail'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea4'),
+    name: 'Rahul Menon',
+    result: 'pass'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea5'),
+    name: 'Anjali Nair',
+    result: 'fail'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea6'),
+    name: 'Kiran Das',
+    result: 'pass'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea7'),
+    name: 'Sneha Thomas',
+    result: 'pass'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea8'),
+    name: 'Arjun Kumar',
+    result: 'fail'
+  }
+]
+simple>
+
+2)$ifNull:-field null anenkil default value kodkkan
+syntax{ $ifNull: [ "$field", "defaultValue" ] }
+
+simple> db.students.aggregate([
+...   {
+...     $project: {
+...       name: 1,
+...       dept: { $ifNull: ["$department", "Not Assigned"] }
+...     }
+...   }
+... ])
+[
+  {
+    _id: ObjectId('693907450d435ae6d9cebea4'),
+    name: 'Alice Johnson',
+    dept: 'Not Assigned'
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea5'),
+    name: 'Bob Williams',
+    dept: 'Not Assigned'
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea6'),
+    name: 'Charlie Davis',
+    dept: 'Not Assigned'
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea7'),
+    name: 'David Smith',
+    dept: 'Not Assigned'
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea8'),
+    name: 'Eva Brown',
+    dept: 'Not Assigned'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea4'),
+    name: 'Rahul Menon',
+    dept: 'Computer Science'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea5'),
+    name: 'Anjali Nair',
+    dept: 'Physics'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea6'),
+    name: 'Kiran Das',
+    dept: 'Mathematics'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea7'),
+    name: 'Sneha Thomas',
+    dept: 'Computer Science'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea8'),
+    name: 'Arjun Kumar',
+    dept: 'Physics'
+  }
+]
+simple>
+
+3)$switch:-
+syntx:-
+{
+  $switch: {
+    branches: [
+      { case: <condition>, then: <value> },
+      { case: <condition>, then: <value> }
+    ],
+    default: <value>
+  }
+}
+
+simple> db.students.aggregate([{$project:{name:1,grade:{$switch:{branches:[{case:{$gte:["$marks",90]},then:"A+"}, { case: { $gte: ["$marks", 80] }, then: "A" },
+...             { case: { $gte: ["$marks", 70] }, then: "B" }],default:"C"}}
+}}])
+[
+  {
+    _id: ObjectId('693907450d435ae6d9cebea4'),
+    name: 'Alice Johnson',
+    grade: 'C'
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea5'),
+    name: 'Bob Williams',
+    grade: 'C'
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea6'),
+    name: 'Charlie Davis',
+    grade: 'C'
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea7'),
+    name: 'David Smith',
+    grade: 'C'
+  },
+  {
+    _id: ObjectId('693907450d435ae6d9cebea8'),
+    name: 'Eva Brown',
+    grade: 'C'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea4'),
+    name: 'Rahul Menon',
+    grade: 'A'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea5'),
+    name: 'Anjali Nair',
+    grade: 'B'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea6'),
+    name: 'Kiran Das',
+    grade: 'A+'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea7'),
+    name: 'Sneha Thomas',
+    grade: 'A'
+  },
+  {
+    _id: ObjectId('6986d8e46d2779adf4cebea8'),
+    name: 'Arjun Kumar',
+    grade: 'C'
+  }
+]
+simple>

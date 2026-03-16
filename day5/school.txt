@@ -1,0 +1,334 @@
+1)for delivered orders only,show the total amount spent by each user,sorted by highest spender first?
+final answer user and total
+steps 1):-
+using $match  for filtering based on status "delivered"
+{$match:{status:"delivered"}}
+
+step2):-
+$project-namukk vendathaaya fields yeduckkan
+
+$project:{userid:1,username:1,finalAmount:{$subtrct:[{$mutiply:["$items","$price"]},"$discount"]}}=>(items*price)-discount
+
+step3):-
+group-
+{$group:{_id:"$userId",userName:{$first:"$userName"},totalSpent:{$sum:"$finalAmount"}}}
+
+step4 ):- 
+$project {$projevct:{_id:0,userId:"$_id",userName:1,totalSpent:1}}
+
+
+step5) sort  {$sort:{totalSpent:1}}
+
+
+orders> db.orders.aggregate([{$match: { status: "delivered" }},{$project: {userId: 1,userName: 1,finalAmount: {$subtract: [{ $multiply: ["$items", "$price"] },  "$discount ]
+ }}  },{ $group: { _id: "$userId", userName: { $first: "$userName" },  totalSpent: { $sum: "$finalAmount" } }},{ $project: {  _id: userId: "$_id", userName: 1,
+ totalSpent: 1},{$sort: { totalSpent: -1 } }])
+[
+  { userName: 'Rahul', totalSpent: 4200, userId: 'U013' },
+  { userName: 'Anil', totalSpent: 2200, userId: 'U011' },
+  { userName: 'Arjun', totalSpent: 1750, userId: 'U015' }
+]
+orders>
+
+
+Q)course wise avg order value  (delivere only)
+1) match-> {$match:{status:"delivered"}}
+2)$project->{$project:course:1,finalAmount:{
+    $subtract:[
+        {$multiply:["$items","$price"]},
+        "$discount"
+    ]
+}}}
+3)group:->
+{$group:{
+    _id:"$course",
+    avgOrderVal:{$avg:"finalAmount"}}
+}}
+
+4)sort->{$sort:{avgOrderValue:-1}}
+
+
+orders> db.orders.aggregate([
+...   { 
+...     $match: { status: "delivered" }
+...   },
+...   {
+...     $project: {
+...       course: 1,
+...       finalAmount: { 
+...         $subtract: [
+...           { $multiply: ["$items", "$price"] },
+...           "$discount"
+...         ]
+...       }
+...     }
+...   },
+...   {
+...     $group: {
+...       _id: "$course",
+...       avgOrderValue: { $avg: "$finalAmount" }
+...     } 
+...   },
+...   {
+...     $sort: { avgOrderValue: -1 }
+...   }
+... ])
+...
+[
+  { _id: 'Chemistry', avgOrderValue: 4200 },
+  { _id: 'Mathematics', avgOrderValue: 2200 },      
+  { _id: 'Computer Science', avgOrderValue: 1750 }  
+]
+orders>
+
+
+Q)👉 Find the top 3 users who spent the most money (only delivered orders).
+$match:{$match:{status:"delivered"}}
+{$project:{userId1,userName:1,finalAmount:{$subtract:['{$multiply:[$items,'$price]},"$dicount"]}}
+
+
+
+orders> db.orders.aggregate([{$match:{status:"delivered"}},{$project:{userId:1,userName:1,finalAmount:{$subtract:[{$multiply:["$items","$price"]},"$discount"]}}},{$group:{_id:"$userId",userName:{$first:"$userName"},totalSpent:{$sum:"$finalAmount"},totalOrders:{$sum:1}}},{$project:{_id:0,userId:"$_id",userName:1,totalSpent:1,totalOrders:1}},{$sort:{totalSpent:-1}}
+,{$limit:3}])
+[
+  { userName: 'Manoj', totalSpent: 5700, totalOrders: 1, userId: 'U025' },
+  { userName: 'Arjun', totalSpent:4200, totalOrders: 1, userId: 'U015' },
+  { userName: 'Anil', totalSpent: 2400, totalOrders: 1, userId: 'U011' }
+]
+orders>
+
+$group example  $sum-totalamount per customer
+db.orders.insertMany([{
+...   _id: 1,
+...   customer: "Mehrin",
+...   product: "Laptop",
+...   amount: 800
+... },{
+...   _id: 2,
+...   customer: "Mehrin",
+...   product: "Mouse",
+...   amount: 20
+... },{
+...   _id: 3,
+...   customer: "Aisha",
+...   product: "Laptop",
+...   amount: 900
+... },{
+...   _id: 4,
+...   customer: "Aisha",
+...   product: "Keyboard",
+...   amount: 50
+... }])
+{ acknowledged: true, insertedIds: { '0': 1, '1': 2, '2': 3, '3': 4 } }
+orders> db.orders.aggregate([{$group:{_id:"$customer
+",totalAmount:{$sum:"$amount"}}}])
+[
+  { _id: 'Aisha', totalAmount: 950 },
+ 
+  { _id: 'Mehrin', totalAmount: 820 }
+]
+orders>
+
+
+
+
+example:-
+db.marks.insertMany([
+  {
+    _id: ObjectId("69a6ac5bfdda228450cebeae"),
+    studentId: "S001",
+    subject: "JavaScript",
+    score: 78,
+    status: "Pass"
+  },
+  {
+    _id: ObjectId("69a6ac5bfdda228450cebeaf"),
+    studentId: "S001",
+    subject: "MongoDB",
+    score: 84,
+    status: "Pass"
+  },
+  {
+    _id: ObjectId("69a6ac5bfdda228450cebeb0"),
+    studentId: "S002",
+    subject: "JavaScript",
+    score: 52,
+    status: "Pass"
+  },
+  {
+    _id: ObjectId("69a6ac5bfdda228450cebeb1"),
+    studentId: "S002",
+    subject: "MongoDB",
+    score: 39,
+    status: "fail"
+  },
+  {
+    _id: ObjectId("69a6ac5bfdda228450cebeb2"),
+    studentId: "S003",
+    subject: "JavaScript",
+    score: 88,
+    status: "Pass"
+  },
+  {
+    _id: ObjectId("69a6ac5bfdda228450cebeb3"),
+    studentId: "S003",
+    subject: "MongoDB",
+    score: 73,
+    status: "Pass"
+  },
+  {
+    _id: ObjectId("69a6ac5bfdda228450cebeb4"),
+    studentId: "S004",
+    subject: "JavaScript",
+    score: 45,
+    status: "fail"
+  },
+  {
+    _id: ObjectId("69a6ac5bfdda228450cebeb5"),
+    studentId: "S004",
+    subject: "MongoDB",
+    score: 60,
+    status: "Pass"
+  },
+  {
+    _id: ObjectId("69a6ac5bfdda228450cebeb6"),
+    studentId: "S005",
+    subject: "JavaScript",
+    score: 91,
+    status: "Pass"
+  },
+  {
+    _id: ObjectId("69a6ac5bfdda228450cebeb7"),
+    studentId: "S005",
+    subject: "MongoDB",
+    score: 95,
+    status: "Pass"
+  }
+])
+
+
+db.students.insertMany([
+  {
+    _id: ObjectId("69a6ac2cfdda228450cebea9"),
+    studentId: "S001",
+    name: "Asha",
+    city: "Kochi",
+    batch: "C2C-01"
+  },
+  {
+    _id: ObjectId("69a6ac2cfdda228450cebeaa"),
+    studentId: "S002",
+    name: "Rahul",
+    city: "Thiruvananthapuram",
+    batch: "C2C-01"
+  },
+  {
+    _id: ObjectId("69a6ac2cfdda228450cebeab"),
+    studentId: "S003",
+    name: "Meera",
+    city: "Kozhikode",
+    batch: "C2C-02"
+  },
+  {
+    _id: ObjectId("69a6ac2cfdda228450cebeac"),
+    studentId: "S004",
+    name: "Nihal",
+    city: "Thrissur",
+    batch: "C2C-02"
+  },
+  {
+    _id: ObjectId("69a6ac2cfdda228450cebead"),
+    studentId: "S005",
+    name: "Zara",
+    city: "Kollam",
+    batch: "C2C-03"
+  }
+])
+
+// find documents where batch "C2C-01"   
+example> db.students.find({batch:"C2C-01"})
+[
+  {
+    _id: ObjectId('69a6ac2cfdda228450cebea9'),
+    studentId: 'S001',
+    name: 'Asha',
+    city: 'Kochi',
+    batch: 'C2C-01'
+  },
+  {
+    _id: ObjectId('69a6ac2cfdda228450cebeaa'),
+    studentId: 'S002',
+    name: 'Rahul',
+    city: 'Thiruvananthapuram',
+    batch: 'C2C-01'
+  }
+]
+example> 
+   // Topper in MongoDB (highest score)
+//topper in mongoDB   
+example> db.marks.find({subject:"MongoDB"})
+[
+  {
+    _id: ObjectId('69a6ac5bfdda228450cebeaf'),
+    studentId: 'S001',
+    subject: 'MongoDB',
+    score: 84,
+    status: 'Pass'
+  },
+  {
+    _id: ObjectId('69a6ac5bfdda228450cebeb1'),
+    studentId: 'S002',
+    subject: 'MongoDB',
+    score: 39,
+    status: 'fail'
+  },
+  {
+    _id: ObjectId('69a6ac5bfdda228450cebeb3'),
+    studentId: 'S003',
+    subject: 'MongoDB',
+    score: 73,
+    status: 'Pass'
+  },
+  {
+    _id: ObjectId('69a6ac5bfdda228450cebeb5'),
+    studentId: 'S004',
+    subject: 'MongoDB',
+    score: 60,
+    status: 'Pass'
+  },
+  {
+    _id: ObjectId('69a6ac5bfdda228450cebeb7'),
+    studentId: 'S005',
+    subject: 'MongoDB',
+    score: 95,
+    status: 'Pass'
+  }
+]
+example> db.marks.find({subject:"MongoDB"}).sort({score:-1}).limit(1)
+[
+  {
+    _id: ObjectId('69a6ac5bfdda228450cebeb7'),
+    studentId: 'S005',
+    subject: 'MongoDB',
+    score: 95,
+    status: 'Pass'
+  }
+]
+example>
+                                     
+// subject wise find average score
+example> db.marks.aggregate([{$group:{_id:"$subject",avgScore:{$avg:"$score"}}}])
+[
+  { _id: 'JavaScript', avgScore: 70.8 },
+  { _id: 'MongoDB', avgScore: 70.2 }
+]
+example>
+// set status 'pass' only if score >=60
+example> db.marks.updateMany({},[{$set:{status:{$cond:{if:{$gte:["$score",60]},then:"pass",else:"fail"}}}}])
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 10,
+  modifiedCount: 8,
+  upsertedCount: 0
+}

@@ -1,0 +1,801 @@
+students :-
+school> db.students.find().pretty()
+[
+  {
+    _id: ObjectId('69ae65f51b00d95143cebea4'),
+    name: 'Amina Rahman',
+    course: 'Biology Science',
+    joiningDate: ISODate('2025-06-01T00:00:00.000Z'),
+    feeStatus: 'paid'
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebea5'),
+    name: 'Nihal Thomas',
+    course: 'Commerce',
+    joiningDate: ISODate('2025-06-03T00:00:00.000Z'),
+    feeStatus: 'pending'
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebea6'),
+    name: 'Farhan Ali',
+    course: 'CS Science',
+    joiningDate: ISODate('2025-06-05T00:00:00.000Z'),
+    feeStatus: 'paid'
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebea7'),
+    name: 'Meera Nair',
+    course: 'Humanities',
+    joiningDate: ISODate('2025-06-07T00:00:00.000Z'),
+    feeStatus: 'pending'
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebea8'),
+    name: 'Adil Hussain',
+    course: 'Biology Science',
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),
+    feeStatus: 'paid'
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebea9'),
+    name: 'Sneha Menon',
+    course: 'CS Science',
+    joiningDate: ISODate('2025-06-12T00:00:00.000Z'),
+    feeStatus: 'pending'
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebeaa'),
+    name: 'Rizwan Kareem',
+    course: 'Commerce',
+    joiningDate: ISODate('2025-06-15T00:00:00.000Z'),
+    feeStatus: 'paid'
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebeab'),
+    name: 'Anjali Varma',
+    course: 'Humanities',
+    joiningDate: ISODate('2025-06-18T00:00:00.000Z'),
+    feeStatus: 'pending'
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebeac'),
+    name: 'Yaseen Ibrahim',
+    course: 'Biology Science',
+    joiningDate: ISODate('2025-06-20T00:00:00.000Z'),
+    feeStatus: 'paid'
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebead'),
+    name: 'Devika Pillai',
+    course: 'Commerce',
+    joiningDate: ISODate('2025-06-22T00:00:00.000Z'),
+    feeStatus: 'pending'
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebeae'),
+    name: 'Arjun Krishnan',
+    course: 'CS Science',
+    joiningDate: ISODate('2025-06-25T00:00:00.000Z'),
+    feeStatus: 'paid'
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebeaf'),
+    name: 'Hiba Fathima',
+    course: 'Humanities',
+    joiningDate: ISODate('2025-06-28T00:00:00.000Z'),
+    feeStatus: 'pending'
+  }
+]
+school>
+
+course:-
+school> db.course.find().pretty()
+[
+  {
+    _id: ObjectId('69ae66f91b00d95143cebeb0'),
+    courseName: 'Biology Science',
+    duration: 24,
+    fee: 50000
+  },
+  {
+    _id: ObjectId('69ae66f91b00d95143cebeb1'),
+    courseName: 'CS Science',
+    duration: 24,
+    fee: 40000
+  },
+  {
+    _id: ObjectId('69ae66f91b00d95143cebeb2'),
+    courseName: 'Commerce',
+    duration: 24,
+    fee: 25000
+  },
+  {
+    _id: ObjectId('69ae66f91b00d95143cebeb3'),
+    courseName: 'Humanities',
+    duration: 24,
+    fee: 20000
+  }
+]
+school>
+
+events:-
+school> db.events.find().pretty()
+[
+  {
+    _id: ObjectId('69ae68381b00d95143cebeb4'),
+    title: 'Annual Day',
+    date: ISODate('2025-08-15T00:00:00.000Z'),
+    description: 'School annual celebration with cultural programs'
+  },
+  {
+    _id: ObjectId('69ae68381b00d95143cebeb5'),
+    title: 'Science Exhibition',
+    date: ISODate('2025-09-05T00:00:00.000Z'),
+    description: 'Students present science projects and experiments'        
+  },
+  {
+    _id: ObjectId('69ae68381b00d95143cebeb6'),
+    title: 'Sports Meet',
+    date: ISODate('2025-10-10T00:00:00.000Z'),
+    description: 'Inter-house athletics and sports competitions'
+  },
+  {
+    _id: ObjectId('69ae68381b00d95143cebeb7'),
+    title: 'Arts Festival',
+    date: ISODate('2025-11-20T00:00:00.000Z'),
+    description: 'Music, dance, and creative arts performances'
+  },
+  {
+    _id: ObjectId('69ae68381b00d95143cebeb8'),
+    title: 'Career Guidance Seminar',
+    date: ISODate('2025-12-12T00:00:00.000Z'),
+    description: 'Experts guide students about higher studies and careers'  
+  }
+]
+school>
+
+=>payments:-
+school> db.payments.find()
+[
+  {
+    _id: ObjectId('69ae83701b00d95143cebeba'),
+    studentId: ObjectId('69ae65f51b00d95143cebea4'),
+    amount: 50000,
+    date: ISODate('2025-07-01T00:00:00.000Z')
+  },
+  {
+    _id: ObjectId('69ae83701b00d95143cebebb'),
+    studentId: ObjectId('69ae65f51b00d95143cebea8'),
+    amount: 50000,
+    date: ISODate('2025-07-03T00:00:00.000Z')
+  },
+  {
+    _id: ObjectId('69ae83701b00d95143cebebc'),
+    studentId: ObjectId('69ae65f51b00d95143cebeac'),
+    amount: 50000,
+    date: ISODate('2025-07-05T00:00:00.000Z')
+  },
+  {
+    _id: ObjectId('69ae83701b00d95143cebebd'),
+    studentId: ObjectId('69ae65f51b00d95143cebea6'),
+    amount: 40000,
+    date: ISODate('2025-07-02T00:00:00.000Z')
+  },
+  {
+    _id: ObjectId('69ae83701b00d95143cebebe'),
+    studentId: ObjectId('69ae65f51b00d95143cebeae'),
+    amount: 40000,
+    date: ISODate('2025-07-06T00:00:00.000Z')
+  },
+  {
+    _id: ObjectId('69ae83701b00d95143cebebf'),
+    studentId: ObjectId('69ae65f51b00d95143cebeaa'),
+    amount: 25000,
+    date: ISODate('2025-07-04T00:00:00.000Z')
+  }
+]
+school>
+
+school> db.students.updateOne({name:"Nihal Thomas"},{$set:{feeStatus:"paid"}
+})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+=>Update a student’s feeStatus to &quot;paid&quot; using $set.
+school> db.students.findOne({name:"Nihal Thomas"})
+{
+  _id: ObjectId('69ae65f51b00d95143cebea5'),
+  name: 'Nihal Thomas',
+  course: 'Commerce',
+  joiningDate: ISODate('2025-06-03T00:00:00.000Z'),
+  feeStatus: 'paid'
+}
+school>
+
+=>Increase all course fees by 5 % using $mul.
+
+school> db.course.updateMany({},{$mul:{fee:1.05}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 4,
+  upsertedCount: 0
+}
+school> db.course.find().pretty()
+[
+  {
+    _id: ObjectId('69ae66f91b00d95143cebeb0'),
+    courseName: 'Biology Science',
+    duration: 24,
+    fee: 52500
+  },
+  {
+    _id: ObjectId('69ae66f91b00d95143cebeb1'),
+    courseName: 'CS Science',
+    duration: 24,
+    fee: 42000
+  },
+  {
+    _id: ObjectId('69ae66f91b00d95143cebeb2'),
+    courseName: 'Commerce',
+    duration: 24,
+    fee: 26250
+  },
+  {
+    _id: ObjectId('69ae66f91b00d95143cebeb3'),
+    courseName: 'Humanities',
+    duration: 24,
+    fee: 21000
+  }
+]
+school>
+
+=>deleteone inactive student
+
+school> db.students.deleteOne({feeStatus:"pending"})
+{ acknowledged: true, deletedCount: 1 }
+school>
+
+=>Apply $jsonSchema to students collection → require name, course, and joiningDate.
+school> db.runCommand({collMod:"students",validator:{$jsonSchema:{bsonType:"object",required:["name","course","joiningDate"],properties:{name:{bsonType:"string",description:"must be string and required"},course:{bsonType:"string",description:"must be string and required"},joiningDate:{bsonType:"date",description:"must be date and required"}}}},validationLevel:"strict",validationAction:"error"})
+{ ok: 1 }
+
+=>Test by inserting an invalid document (missing a required field).
+school> db.students.insertOne({name:"athul"})
+Uncaught:
+MongoServerError: Document failed validation
+Additional information: {
+  failingDocumentId: ObjectId('69ae72ea1b00d95143cebeb9'),
+  details: {
+    operatorName: '$jsonSchema',
+    schemaRulesNotSatisfied: [
+      {
+        operatorName: 'required',
+        specifiedAs: { required: [ 'name', 'course', 'joiningDate' ] },     
+        missingProperties: [ 'course', 'joiningDate' ]
+      }
+    ]
+  }
+}
+school>
+
+
+=>4. Index &amp; Performance
+ Create an index on course.
+ Run find({course:&quot;Science&quot;}) and compare explain() before/after indexing.
+
+//before create index:-
+school> db.students.find({course:"Biology Science"}).explain("executionStats
+")
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'school.students',
+    parsedQuery: { course: { '$eq': 'Biology Science' } },
+    indexFilterSet: false,
+    queryHash: '591AA429',
+    planCacheShapeHash: '591AA429',
+    planCacheKey: '6FF657C8',
+    optimizationTimeMillis: 2,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'COLLSCAN',
+      filter: { course: { '$eq': 'Biology Science' } },
+      direction: 'forward'
+    },
+    rejectedPlans: []
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 3,
+    executionTimeMillis: 4,
+    totalKeysExamined: 0,
+    totalDocsExamined: 11,
+    executionStages: {
+      isCached: false,
+      stage: 'COLLSCAN',
+      filter: { course: { '$eq': 'Biology Science' } },
+      nReturned: 3,
+      executionTimeMillisEstimate: 0,
+      works: 12,
+      advanced: 3,
+      needTime: 8,
+      needYield: 0,
+      saveState: 0,
+      restoreState: 0,
+      isEOF: 1,
+      direction: 'forward',
+      docsExamined: 11
+    }
+  },
+  queryShapeHash: '471423B4F026D3D997E5B7A1B986FF2CBABCE2F786788963EA25F99F0F9AA650',
+  command: {
+    find: 'students',
+    filter: { course: 'Biology Science' },
+    '$db': 'school'
+  },
+  serverInfo: {
+    host: 'LAPTOP-QFH9CESQ',
+    port: 27017,
+    version: '8.2.1',
+    gitVersion: '3312bdcf28aa65f5930005e21c2cb130f648b8c3'
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,
+    internalQueryMaxBlockingSortMemoryUsageBytes: 104857600,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1
+}
+school>
+
+
+=>after creating index:-
+school> db.students.createIndex({course:1})
+course_1
+school> db.students.find({course:"Biology Science"}).explain("executionStats
+")
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'school.students',
+    parsedQuery: { course: { '$eq': 'Biology Science' } },
+    indexFilterSet: false,
+    queryHash: '591AA429',
+    planCacheShapeHash: '591AA429',
+    planCacheKey: '951B4248',
+    optimizationTimeMillis: 2,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'FETCH',
+      inputStage: {
+        stage: 'IXSCAN',
+        keyPattern: { course: 1 },
+        indexName: 'course_1',
+        isMultiKey: false,
+        multiKeyPaths: { course: [] },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: { course: [ '["Biology Science", "Biology Science"]' ] }
+      }
+    },
+    rejectedPlans: []
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 3,
+    executionTimeMillis: 11,
+    totalKeysExamined: 3,
+    totalDocsExamined: 3,
+    executionStages: {
+      isCached: false,
+      stage: 'FETCH',
+      nReturned: 3,
+      executionTimeMillisEstimate: 8,
+      works: 4,
+      advanced: 3,
+      needTime: 0,
+      needYield: 0,
+      saveState: 0,
+      restoreState: 0,
+      isEOF: 1,
+      docsExamined: 3,
+      alreadyHasObj: 0,
+      inputStage: {
+        stage: 'IXSCAN',
+        nReturned: 3,
+        executionTimeMillisEstimate: 8,
+        works: 4,
+        advanced: 3,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        keyPattern: { course: 1 },
+        indexName: 'course_1',
+        isMultiKey: false,
+        multiKeyPaths: { course: [] },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: { course: [ '["Biology Science", "Biology Science"]' ] },
+        keysExamined: 3,
+        seeks: 1,
+        dupsTested: 0,
+        dupsDropped: 0
+      }
+    }
+  },
+  queryShapeHash: '471423B4F026D3D997E5B7A1B986FF2CBABCE2F786788963EA25F99F0F9AA650',
+  command: {
+    find: 'students',
+    filter: { course: 'Biology Science' },
+    '$db': 'school'
+  },
+  serverInfo: {
+    host: 'LAPTOP-QFH9CESQ',
+    port: 27017,
+    version: '8.2.1',
+    gitVersion: '3312bdcf28aa65f5930005e21c2cb130f648b8c3'
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,
+    internalQueryMaxBlockingSortMemoryUsageBytes: 104857600,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1
+}
+school>
+
+
+
+5. Aggregation Reports
+ Use $lookup to join students and payments.
+
+
+
+
+
+school> db.students.aggregate([{$lookup:{from:"payments",localField:"_id",fo
+foreignField:"studentId",as:"payments"}}])
+[
+  {
+    _id: ObjectId('69ae65f51b00d95143cebea4'),
+    name: 'Amina Rahman',
+    course: 'Biology Science',
+    joiningDate: ISODate('2025-06-01T00:00:00.000Z'),
+    feeStatus: 'paid',
+    payments: [
+      {
+        _id: ObjectId('69ae83701b00d95143cebeba'),
+        studentId: ObjectId('69ae65f51b00d95143cebea4'),
+        amount: 50000,
+        date: ISODate('2025-07-01T00:00:00.000Z')
+      }
+    ]
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebea5'),
+    name: 'Nihal Thomas',
+    course: 'Commerce',
+    joiningDate: ISODate('2025-06-03T00:00:00.000Z'),
+    feeStatus: 'paid',
+    payments: []
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebea6'),
+    name: 'Farhan Ali',
+    course: 'CS Science',
+    joiningDate: ISODate('2025-06-05T00:00:00.000Z'),
+    feeStatus: 'paid',
+    payments: [
+      {
+        _id: ObjectId('69ae83701b00d95143cebebd'),
+        studentId: ObjectId('69ae65f51b00d95143cebea6'),
+        amount: 40000,
+        date: ISODate('2025-07-02T00:00:00.000Z')
+      }
+    ]
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebea8'),
+    name: 'Adil Hussain',
+    course: 'Biology Science',
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),
+    feeStatus: 'paid',
+    payments: [
+      {
+        _id: ObjectId('69ae83701b00d95143cebebb'),
+        studentId: ObjectId('69ae65f51b00d95143cebea8'),
+        amount: 50000,
+        date: ISODate('2025-07-03T00:00:00.000Z')
+      }
+    ]
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebea9'),
+    name: 'Sneha Menon',
+    course: 'CS Science',
+    joiningDate: ISODate('2025-06-12T00:00:00.000Z'),
+    feeStatus: 'pending',
+    payments: []
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebeaa'),
+    name: 'Rizwan Kareem',
+    course: 'Commerce',
+    joiningDate: ISODate('2025-06-15T00:00:00.000Z'),
+    feeStatus: 'paid',
+    payments: [
+      {
+        _id: ObjectId('69ae83701b00d95143cebebf'),
+        studentId: ObjectId('69ae65f51b00d95143cebeaa'),
+        amount: 25000,
+        date: ISODate('2025-07-04T00:00:00.000Z')
+      }
+    ]
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebeab'),
+    name: 'Anjali Varma',
+    course: 'Humanities',
+    joiningDate: ISODate('2025-06-18T00:00:00.000Z'),
+    feeStatus: 'pending',
+    payments: []
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebeac'),
+    name: 'Yaseen Ibrahim',
+    course: 'Biology Science',
+    joiningDate: ISODate('2025-06-20T00:00:00.000Z'),
+    feeStatus: 'paid',
+    payments: [
+      {
+        _id: ObjectId('69ae83701b00d95143cebebc'),
+        studentId: ObjectId('69ae65f51b00d95143cebeac'),
+        amount: 50000,
+        date: ISODate('2025-07-05T00:00:00.000Z')
+      }
+    ]
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebead'),
+    name: 'Devika Pillai',
+    course: 'Commerce',
+    joiningDate: ISODate('2025-06-22T00:00:00.000Z'),
+    feeStatus: 'pending',
+    payments: []
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebeae'),
+    name: 'Arjun Krishnan',
+    course: 'CS Science',
+    joiningDate: ISODate('2025-06-25T00:00:00.000Z'),
+    feeStatus: 'paid',
+    payments: [
+      {
+        _id: ObjectId('69ae83701b00d95143cebebe'),
+        studentId: ObjectId('69ae65f51b00d95143cebeae'),
+        amount: 40000,
+        date: ISODate('2025-07-06T00:00:00.000Z')
+      }
+    ]
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebeaf'),
+    name: 'Hiba Fathima',
+    course: 'Humanities',
+    joiningDate: ISODate('2025-06-28T00:00:00.000Z'),
+    feeStatus: 'pending',
+    payments: []
+  }
+]
+school>
+
+
+
+ii) Use $group to calculate total payments per course.
+school> db.payments.aggregate([{$lookup:{from:"students",localField:"studentId",foreignField:"_id",as:"student"}},{$unwind:"$student"},{$group:{_id:"$st
+udent.course",totalRevenue:{$sum:"$amount"}}}])
+[
+  { _id: 'CS Science', totalRevenue: 80000 },
+  { _id: 'Biology Science', totalRevenue: 150000 },
+  { _id: 'Commerce', totalRevenue: 25000 }
+]
+school>
+
+iii)Use $addFields to mark students as &quot;Active&quot; if payment done.
+school> db.students.aggregate([{$lookup:{from:"payments",localField:"_id",foreignField:"studentId",as:"payments"}},{$addFields:{status:{$cond:[{$gt:[{$size:"$payments"},0]},"Active","Inactive"]}}}])
+[
+  {
+    _id: ObjectId('69ae65f51b00d95143cebea4'),
+    name: 'Amina Rahman',
+    course: 'Biology Science',
+    joiningDate: ISODate('2025-06-01T00:00:00.000Z'),
+    feeStatus: 'paid',
+    payments: [
+      {
+        _id: ObjectId('69ae83701b00d95143cebeba'),
+        studentId: ObjectId('69ae65f51b00d95143cebea4'),
+        amount: 50000,
+        date: ISODate('2025-07-01T00:00:00.000Z')
+      }
+    ],
+    status: 'Active'
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebea5'),
+    name: 'Nihal Thomas',
+    course: 'Commerce',
+    joiningDate: ISODate('2025-06-03T00:00:00.000Z'),
+    feeStatus: 'paid',
+    payments: [],
+    status: 'Inactive'
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebea6'),
+    name: 'Farhan Ali',
+    course: 'CS Science',
+    joiningDate: ISODate('2025-06-05T00:00:00.000Z'),
+    feeStatus: 'paid',
+    payments: [
+      {
+        _id: ObjectId('69ae83701b00d95143cebebd'),
+        studentId: ObjectId('69ae65f51b00d95143cebea6'),
+        amount: 40000,
+        date: ISODate('2025-07-02T00:00:00.000Z')
+      }
+    ],
+    status: 'Active'
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebea8'),
+    name: 'Adil Hussain',
+    course: 'Biology Science',
+    joiningDate: ISODate('2025-06-10T00:00:00.000Z'),
+    feeStatus: 'paid',
+    payments: [
+      {
+        _id: ObjectId('69ae83701b00d95143cebebb'),
+        studentId: ObjectId('69ae65f51b00d95143cebea8'),
+        amount: 50000,
+        date: ISODate('2025-07-03T00:00:00.000Z')
+      }
+    ],
+    status: 'Active'
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebea9'),
+    name: 'Sneha Menon',
+    course: 'CS Science',
+    joiningDate: ISODate('2025-06-12T00:00:00.000Z'),
+    feeStatus: 'pending',
+    payments: [],
+    status: 'Inactive'
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebeaa'),
+    name: 'Rizwan Kareem',
+    course: 'Commerce',
+    joiningDate: ISODate('2025-06-15T00:00:00.000Z'),
+    feeStatus: 'paid',
+    payments: [
+      {
+        _id: ObjectId('69ae83701b00d95143cebebf'),
+        studentId: ObjectId('69ae65f51b00d95143cebeaa'),
+        amount: 25000,
+        date: ISODate('2025-07-04T00:00:00.000Z')
+      }
+    ],
+    status: 'Active'
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebeab'),
+    name: 'Anjali Varma',
+    course: 'Humanities',
+    joiningDate: ISODate('2025-06-18T00:00:00.000Z'),
+    feeStatus: 'pending',
+    payments: [],
+    status: 'Inactive'
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebeac'),
+    name: 'Yaseen Ibrahim',
+    course: 'Biology Science',
+    joiningDate: ISODate('2025-06-20T00:00:00.000Z'),
+    feeStatus: 'paid',
+    payments: [
+      {
+        _id: ObjectId('69ae83701b00d95143cebebc'),
+        studentId: ObjectId('69ae65f51b00d95143cebeac'),
+        amount: 50000,
+        date: ISODate('2025-07-05T00:00:00.000Z')
+      }
+    ],
+    status: 'Active'
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebead'),
+    name: 'Devika Pillai',
+    course: 'Commerce',
+    joiningDate: ISODate('2025-06-22T00:00:00.000Z'),
+    feeStatus: 'pending',
+    payments: [],
+    status: 'Inactive'
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebeae'),
+    name: 'Arjun Krishnan',
+    course: 'CS Science',
+    joiningDate: ISODate('2025-06-25T00:00:00.000Z'),
+    feeStatus: 'paid',
+    payments: [
+      {
+        _id: ObjectId('69ae83701b00d95143cebebe'),
+        studentId: ObjectId('69ae65f51b00d95143cebeae'),
+        amount: 40000,
+        date: ISODate('2025-07-06T00:00:00.000Z')
+      }
+    ],
+    status: 'Active'
+  },
+  {
+    _id: ObjectId('69ae65f51b00d95143cebeaf'),
+    name: 'Hiba Fathima',
+    course: 'Humanities',
+    joiningDate: ISODate('2025-06-28T00:00:00.000Z'),
+    feeStatus: 'pending',
+    payments: [],
+    status: 'Inactive'
+  }
+]
+school>
+
+
+iv)Use $sort and $limit to list top 3 courses by revenue.
+
+
+school> db.payments.aggregate([{$lookup:{from:"students",localField:"studentId",foreignField:"_id",as:"student"}},{$unwind:"$student"},{$group:{_id:"$student.course",totalRevenue:{$sum:"$amount"}}},{$sort:{totalRevenue:-1}},{$li
+$limit:3}])
+[
+  { _id: 'Biology Science', totalRevenue: 150000 },
+  { _id: 'CS Science', totalRevenue: 80000 },
+  { _id: 'Commerce', totalRevenue: 25000 }
+]
+school>
+
+

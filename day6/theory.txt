@@ -1,0 +1,21 @@
+1)replication:-mongoDb is the process of maintaining multiple copies of same data across multiple servers
+2)replica set:- is a grp of mongoDB servers that keeps the same data.
+it contains:* primary->accpts writes
+*secondaries->copy data from primary
+*optional arboter->only votes
+only 1 primary exists at a time
+
+3)Oplog->opertion log
+when primary performs insert update,delete ,it records operation in Oplog.oplog stores the opertion ,not the final reslt,secondaries copy operations from Oplog.
+
+if primary crash(automatic failover):-election process
+secondaries detect missing heartbrats,one becomes canditae,voting nadakkum automatically,majority wins->new primary selected.
+
+odd numberil aayirikkum replica sets.
+
+
+*suppose primary opertion kazhinjj ,oplogiloott record cheyyunnathinu munb if primary crash:-
+
+write concern for data safety:-
+
+write concern decides:when mongoDB should say "write successful"
